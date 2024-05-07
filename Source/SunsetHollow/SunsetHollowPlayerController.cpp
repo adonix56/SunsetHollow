@@ -43,21 +43,62 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		// Setup mouse input events
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ASunsetHollowPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(LeftClick, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnLeftClickStarted);
+		EnhancedInputComponent->BindAction(LeftClick, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnLeftClickTriggered);
+		EnhancedInputComponent->BindAction(LeftClick, ETriggerEvent::Completed, this, &ASunsetHollowPlayerController::OnLeftClickReleased);
+		EnhancedInputComponent->BindAction(LeftClick, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnLeftClickReleased);
+
+		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnRightClickStarted);
+		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnRightClickTriggered);
+		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Completed, this, &ASunsetHollowPlayerController::OnRightClickReleased);
+		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnRightClickReleased);
+
+		EnhancedInputComponent->BindAction(SwapMouse, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSwapMouse);
 
 		// Setup touch input events
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnTouchTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ASunsetHollowPlayerController::OnTouchReleased);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnTouchReleased);
+		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
+		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnTouchTriggered);
+		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ASunsetHollowPlayerController::OnTouchReleased);
+		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnTouchReleased);
 	}
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void ASunsetHollowPlayerController::OnLeftClickStarted()
+{
+	if (bLeftClickMove) { OnInputStarted(); }
+}
+
+void ASunsetHollowPlayerController::OnLeftClickTriggered()
+{
+	if (bLeftClickMove) { OnSetDestinationTriggered(); }
+}
+
+void ASunsetHollowPlayerController::OnLeftClickReleased()
+{
+	if (bLeftClickMove) { OnSetDestinationReleased(); }
+}
+
+void ASunsetHollowPlayerController::OnRightClickStarted()
+{
+	if (!bLeftClickMove) { OnInputStarted(); }
+}
+
+void ASunsetHollowPlayerController::OnRightClickTriggered()
+{
+	if (!bLeftClickMove) { OnSetDestinationTriggered(); }
+}
+
+void ASunsetHollowPlayerController::OnRightClickReleased()
+{
+	if (!bLeftClickMove) { OnSetDestinationReleased(); }
+}
+
+void ASunsetHollowPlayerController::OnSwapMouse() {
+	bLeftClickMove = !bLeftClickMove;
 }
 
 void ASunsetHollowPlayerController::OnInputStarted()
