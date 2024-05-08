@@ -130,25 +130,25 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 		CachedDestination = Hit.Location;
 	}
 	
-	// Move towards mouse pointer or touch
+	/*/ Move towards mouse pointer or touch
 	APawn* ControlledPawn = GetPawn();
 	if (ControlledPawn != nullptr)
 	{
 		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
-	}
+	}*/
+	// If it was a short press
+	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 }
 
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
 {
-	// If it was a short press
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
-
 	FollowTime = 0.f;
 }
 
