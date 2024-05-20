@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "SunsetHollowCharacter.generated.h"
 
+class UAbilitySystemComponent;
+
 UCLASS(Blueprintable)
-class ASunsetHollowCharacter : public ACharacter
+class ASunsetHollowCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -21,6 +24,14 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+protected:
+	virtual void BeginPlay();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	UAbilitySystemComponent* GASAbilitySystemComponent;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASAbilitySystemComponent; }
 
 private:
 	/** Top down camera */

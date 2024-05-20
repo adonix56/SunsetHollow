@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
+#include "AbilitySystemComponent.h"
 #include "Engine/World.h"
 
 ASunsetHollowCharacter::ASunsetHollowCharacter()
@@ -35,6 +36,8 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
+	GASAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GASAbilitySystemComponent"));
+
 	// Create a camera...
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
@@ -48,4 +51,11 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+}
+
+void ASunsetHollowCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
