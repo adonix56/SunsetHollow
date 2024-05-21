@@ -37,6 +37,11 @@ void ASunsetHollowPlayerController::BeginPlay()
 	}
 
 	SunsetCharacter = Cast<ASunsetHollowCharacter>(GetPawn());
+	if (SunsetCharacter) {
+		for (FSunsetHollowGameplayAbilityInput GASInput : GameplayAbilityArray) {
+			SunsetCharacter->GetAbilitySystemComponent()->GiveAbility(FGameplayAbilitySpec(GASInput.GameplayAbility));
+		}
+	}
 }
 
 void ASunsetHollowPlayerController::SetupInputComponent()
