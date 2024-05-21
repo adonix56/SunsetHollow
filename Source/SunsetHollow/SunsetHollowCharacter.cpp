@@ -36,7 +36,7 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
-	GASAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GASAbilitySystemComponent"));
+	GASComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GASAbilitySystemComponent"));
 
 	// Create a camera...
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
@@ -58,4 +58,6 @@ void ASunsetHollowCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	//GASComponent->TryActivateAbilityByClass(TSubclassOf<>)
 }

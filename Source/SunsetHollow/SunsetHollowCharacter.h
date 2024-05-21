@@ -25,13 +25,13 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASComponent; }
+
 protected:
 	virtual void BeginPlay();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
-	UAbilitySystemComponent* GASAbilitySystemComponent;
-
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASAbilitySystemComponent; }
+	UAbilitySystemComponent* GASComponent;
 
 private:
 	/** Top down camera */

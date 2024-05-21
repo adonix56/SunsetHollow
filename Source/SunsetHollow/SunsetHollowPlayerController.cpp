@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 
@@ -20,6 +21,8 @@ ASunsetHollowPlayerController::ASunsetHollowPlayerController()
 	DefaultMouseCursor = EMouseCursor::Default;
 	CachedDestination = FVector::ZeroVector;
 	FollowTime = 0.f;
+
+	//GASComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GAS Component"));
 }
 
 void ASunsetHollowPlayerController::BeginPlay()
@@ -32,6 +35,8 @@ void ASunsetHollowPlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
+
+	SunsetCharacter = Cast<ASunsetHollowCharacter>(GetPawn());
 }
 
 void ASunsetHollowPlayerController::SetupInputComponent()
@@ -54,6 +59,8 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnRightClickReleased);
 
 		EnhancedInputComponent->BindAction(SwapMouse, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSwapMouse);
+
+		EnhancedInputComponent->BindAction(GameplayAbilityArray[0].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSpacebarStarted);
 
 		// Setup touch input events
 		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
@@ -95,6 +102,15 @@ void ASunsetHollowPlayerController::OnRightClickTriggered()
 void ASunsetHollowPlayerController::OnRightClickReleased()
 {
 	if (!bLeftClickMove) { OnSetDestinationReleased(); }
+}
+
+void ASunsetHollowPlayerController::OnSpacebarStarted() {
+	if (SunsetCharacter) {
+		UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
+		if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[0].GameplayAbility)) {
+			StopMovement();
+		}
+	}
 }
 
 void ASunsetHollowPlayerController::OnSwapMouse() {

@@ -5,17 +5,29 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
+//#include "AbilitySystemInterface.h"
+#include "Templates\SubclassOf.h"
 #include "SunsetHollowPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
+class ASunsetHollowCharacter;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+USTRUCT(BlueprintType)
+struct FSunsetHollowGameplayAbilityInput {
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UGameplayAbility> GameplayAbility;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UInputAction* InputAction;
+};
+
 UCLASS()
-class ASunsetHollowPlayerController : public APlayerController
+class ASunsetHollowPlayerController : public APlayerController//, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -56,6 +68,14 @@ protected:
 	bool bLeftClickMove = true;
 
 	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS)
+	TArray<FSunsetHollowGameplayAbilityInput> GameplayAbilityArray;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	//UAbilitySystemComponent* GASComponent;
+
+	//virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASComponent; }
 	
 	// To add mapping context
 	virtual void BeginPlay();
@@ -68,6 +88,8 @@ protected:
 	void OnRightClickTriggered();
 	void OnRightClickReleased();
 
+	void OnSpacebarStarted();
+
 	void OnSwapMouse();
 
 	/** Input handlers for SetDestination action. */
@@ -79,6 +101,7 @@ protected:
 
 private:
 	FVector CachedDestination;
+	ASunsetHollowCharacter* SunsetCharacter;
 
 	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed
