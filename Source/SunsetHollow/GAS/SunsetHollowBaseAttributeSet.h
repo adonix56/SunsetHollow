@@ -18,22 +18,20 @@ class SUNSETHOLLOW_API USunsetHollowBaseAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 	
-protected:
+public:
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Health);
 
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Mana);
 
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, MaxHealth);
 
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData MaxMana;
-
-private:
-	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Health);
-	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Mana);
-	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, MaxHealth);
 	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, MaxMana);
 };
