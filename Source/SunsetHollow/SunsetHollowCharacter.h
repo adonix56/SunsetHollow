@@ -28,6 +28,9 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASComponent; }
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	bool bIsAttacking;
+
 protected:
 	virtual void BeginPlay();
 
@@ -36,9 +39,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	const USunsetHollowBaseAttributeSet* BaseAttributeSet;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
-	bool bIsAttacking;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	int AttackCount = 0;

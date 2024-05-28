@@ -161,7 +161,7 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
 	}*/
 	// If it was a short press
-	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+	if (!SunsetCharacter->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 }
 
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
@@ -169,7 +169,7 @@ void ASunsetHollowPlayerController::OnSetDestinationReleased()
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+		if (!SunsetCharacter->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
 	FollowTime = 0.f;
