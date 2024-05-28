@@ -99,6 +99,10 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
+	//TEST EVENT
+	UFUNCTION(BlueprintImplementableEvent)
+	void BPF_Attack();
+
 private:
 	FVector CachedDestination;
 	ASunsetHollowCharacter* SunsetCharacter;

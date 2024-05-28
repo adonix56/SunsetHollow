@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "GAS/SunsetHollowBaseAttributeSet.h"
 #include "SunsetHollowCharacter.generated.h"
 
 class UAbilitySystemComponent;
@@ -32,6 +33,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	UAbilitySystemComponent* GASComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	const USunsetHollowBaseAttributeSet* BaseAttributeSet;
 
 private:
 	/** Top down camera */

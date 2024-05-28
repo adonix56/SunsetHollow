@@ -82,6 +82,7 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 void ASunsetHollowPlayerController::OnLeftClickStarted()
 {
 	if (bLeftClickMove) { OnInputStarted(); }
+	else { BPF_Attack(); }
 }
 
 void ASunsetHollowPlayerController::OnLeftClickTriggered()
@@ -97,6 +98,7 @@ void ASunsetHollowPlayerController::OnLeftClickReleased()
 void ASunsetHollowPlayerController::OnRightClickStarted()
 {
 	if (!bLeftClickMove) { OnInputStarted(); }
+	else { BPF_Attack(); }
 }
 
 void ASunsetHollowPlayerController::OnRightClickTriggered()

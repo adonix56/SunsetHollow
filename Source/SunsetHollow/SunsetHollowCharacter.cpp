@@ -57,6 +57,9 @@ void ASunsetHollowCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (IsValid(GASComponent)) {
+		BaseAttributeSet = GASComponent->GetSet<USunsetHollowBaseAttributeSet>();
+	}
 	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
 
 	//GASComponent->TryActivateAbilityByClass(TSubclassOf<>)
