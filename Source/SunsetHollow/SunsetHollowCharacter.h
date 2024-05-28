@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	bool bIsAttacking;
 
+	int GetAttackCount() { return AttackCount; }
+	void IncreaseAttackCount();
+
 protected:
 	virtual void BeginPlay();
 

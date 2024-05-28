@@ -98,6 +98,7 @@ protected:
 	void OnSetDestinationReleased();
 	void OnTouchTriggered();
 	void OnTouchReleased();
+	void OnBasicAttack();
 
 	//TEST EVENT
 	UFUNCTION(BlueprintImplementableEvent)

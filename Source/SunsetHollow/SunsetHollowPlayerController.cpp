@@ -82,7 +82,7 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 void ASunsetHollowPlayerController::OnLeftClickStarted()
 {
 	if (bLeftClickMove) { OnInputStarted(); }
-	else { BPF_Attack(); }
+	else { OnBasicAttack(); }//BPF_Attack(); }
 }
 
 void ASunsetHollowPlayerController::OnLeftClickTriggered()
@@ -98,7 +98,7 @@ void ASunsetHollowPlayerController::OnLeftClickReleased()
 void ASunsetHollowPlayerController::OnRightClickStarted()
 {
 	if (!bLeftClickMove) { OnInputStarted(); }
-	else { BPF_Attack(); }
+	else { OnBasicAttack(); }//BPF_Attack(); }
 }
 
 void ASunsetHollowPlayerController::OnRightClickTriggered()
@@ -186,4 +186,15 @@ void ASunsetHollowPlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
+}
+
+void ASunsetHollowPlayerController::OnBasicAttack() {
+	if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
+		StopMovement();
+		int AbilityToActivate = SunsetCharacter->GetAttackCount() + 1;
+		if (SunsetCharacter->GetAbilitySystemComponent()->TryActivateAbilityByClass(GameplayAbilityArray[AbilityToActivate].GameplayAbility)) {
+			SunsetCharacter->IncreaseAttackCount();
+			SunsetCharacter->bIsAttacking = true;
+		}
+	}
 }

@@ -64,3 +64,8 @@ void ASunsetHollowCharacter::BeginPlay()
 
 	//GASComponent->TryActivateAbilityByClass(TSubclassOf<>)
 }
+
+void ASunsetHollowCharacter::IncreaseAttackCount() {
+	if (AttackCount == 2) AttackCount = 0;
+	else AttackCount++;
+}
