@@ -7,13 +7,13 @@
 #include "GameFramework/PlayerController.h"
 //#include "AbilitySystemInterface.h"
 #include "Templates\SubclassOf.h"
+#include "SunsetHollowCharacter.h"
 #include "SunsetHollowPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
-class ASunsetHollowCharacter;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -80,6 +80,8 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
+	virtual void OnPossess(APawn* aPawn) override;
+
 	void OnLeftClickStarted();
 	void OnLeftClickTriggered();
 	void OnLeftClickReleased();
@@ -100,13 +102,15 @@ protected:
 	void OnTouchReleased();
 	void OnBasicAttack();
 
-	//TEST EVENT
-	UFUNCTION(BlueprintImplementableEvent)
-	void BPF_Attack();
-
 private:
 	FVector CachedDestination;
-	ASunsetHollowCharacter* SunsetCharacter;
+
+	//UPROPERTY(VisibleAnywhere, Transient)
+	//ASunsetHollowCharacter* SunsetCharacter;
+
+	ASunsetHollowCharacter* GetSunsetCharacter() { return Cast<ASunsetHollowCharacter>(GetPawn()); }
+
+	//TWeakObjectPtr<ASunsetHollowCharacter> SunsetCharacterTwo;
 
 	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed

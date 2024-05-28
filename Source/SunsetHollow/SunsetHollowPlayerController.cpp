@@ -35,8 +35,13 @@ void ASunsetHollowPlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
+}
 
-	SunsetCharacter = Cast<ASunsetHollowCharacter>(GetPawn());
+void ASunsetHollowPlayerController::OnPossess(APawn* aPawn)
+{
+	Super::OnPossess(aPawn);
+
+	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 	if (SunsetCharacter) {
 		for (FSunsetHollowGameplayAbilityInput GASInput : GameplayAbilityArray) {
 			SunsetCharacter->GetAbilitySystemComponent()->GiveAbility(FGameplayAbilitySpec(GASInput.GameplayAbility));
@@ -112,6 +117,7 @@ void ASunsetHollowPlayerController::OnRightClickReleased()
 }
 
 void ASunsetHollowPlayerController::OnSpacebarStarted() {
+	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 	if (SunsetCharacter) {
 		UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
 		if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[0].GameplayAbility)) {
@@ -161,7 +167,7 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
 	}*/
 	// If it was a short press
-	if (!SunsetCharacter->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+	if (!GetSunsetCharacter()->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 }
 
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
@@ -169,7 +175,7 @@ void ASunsetHollowPlayerController::OnSetDestinationReleased()
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles
-		if (!SunsetCharacter->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+		if (!GetSunsetCharacter()->bIsAttacking) UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
 	FollowTime = 0.f;
@@ -189,6 +195,7 @@ void ASunsetHollowPlayerController::OnTouchReleased()
 }
 
 void ASunsetHollowPlayerController::OnBasicAttack() {
+	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 	if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
 		StopMovement();
 		int AbilityToActivate = SunsetCharacter->GetAttackCount() + 1;
