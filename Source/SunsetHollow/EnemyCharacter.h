@@ -8,6 +8,8 @@
 #include "GAS/SunsetHollowBaseAttributeSet.h"
 #include "EnemyCharacter.generated.h"
 
+class UBehaviorTree;
+
 UCLASS()
 class SUNSETHOLLOW_API AEnemyCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -19,6 +21,8 @@ public:
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASComponent; }
 
+	UBehaviorTree* GetBehaviorTree() const { return Tree; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -28,6 +32,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	const USunsetHollowBaseAttributeSet* BaseAttributeSet;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
+	UBehaviorTree* Tree;
 
 public:	
 	// Called every frame
