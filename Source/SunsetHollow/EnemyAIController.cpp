@@ -17,7 +17,6 @@ AEnemyAIController::AEnemyAIController(FObjectInitializer const& ObjectInitializ
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupSightConfig();
 }
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
@@ -30,6 +29,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 			UseBlackboard(EnemyTree->BlackboardAsset, BlackboardTemp);
 			Blackboard = BlackboardTemp;
 			RunBehaviorTree(EnemyTree);
+			SetupSightConfig();
 		}
 	}
 }
@@ -39,6 +39,17 @@ void AEnemyAIController::SetupPerceptionSystem()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
 	if (SightConfig) {
 		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception Component")));
+		SightConfig->SightRadius = 0.f;
+		SightConfig->LoseSightRadius = 0.f;
+		SightConfig->PeripheralVisionAngleDegrees = 360.f;
+		SightConfig->SetMaxAge(5.f);
+		SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.f;
+		SightConfig->DetectionByAffiliation.bDetectEnemies = true;
+		SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+		SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+		GetPerceptionComponent()->SetDominantSense(*SightConfig->GetSenseImplementation());
+		GetPerceptionComponent()->ConfigureSense(*SightConfig);
 		GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnTargetDetected);
 	}
 }
@@ -49,14 +60,6 @@ void AEnemyAIController::SetupSightConfig()
 	if (SightConfig && Enemy) {
 		SightConfig->SightRadius = Enemy->GetSightRadius();
 		SightConfig->LoseSightRadius = Enemy->GetLoseSightRadius();
-		SightConfig->PeripheralVisionAngleDegrees = 360.f;
-		SightConfig->SetMaxAge(5.f);
-		SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.f;
-		SightConfig->DetectionByAffiliation.bDetectEnemies = true;
-		SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-		SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-
-		GetPerceptionComponent()->SetDominantSense(*SightConfig->GetSenseImplementation());
 		GetPerceptionComponent()->ConfigureSense(*SightConfig);
 	}
 }
