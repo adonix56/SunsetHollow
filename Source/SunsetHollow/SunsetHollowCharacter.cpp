@@ -11,6 +11,8 @@
 #include "Materials/Material.h"
 #include "AbilitySystemComponent.h"
 #include "Engine/World.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 ASunsetHollowCharacter::ASunsetHollowCharacter()
 {
@@ -46,6 +48,8 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	SetupStimulusSource();
 }
 
 void ASunsetHollowCharacter::Tick(float DeltaSeconds)
@@ -63,6 +67,15 @@ void ASunsetHollowCharacter::BeginPlay()
 	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
 
 	//GASComponent->TryActivateAbilityByClass(TSubclassOf<>)
+}
+
+void ASunsetHollowCharacter::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source Component"));
+	if (StimulusSource) {
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+		StimulusSource->RegisterWithPerceptionSystem();
+	}
 }
 
 void ASunsetHollowCharacter::IncreaseAttackCount() {

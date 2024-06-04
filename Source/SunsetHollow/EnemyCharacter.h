@@ -23,6 +23,10 @@ public:
 
 	UBehaviorTree* GetBehaviorTree() const { return Tree; }
 
+	float GetSightRadius() const { return SightRadius; }
+	
+	float GetLoseSightRadius() const { return SightRadius + LoseSightDistance; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,6 +39,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* Tree;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
+	float SightRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
+	float LoseSightDistance;
 
 public:	
 	// Called every frame
