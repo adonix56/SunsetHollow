@@ -2,7 +2,11 @@
 
 
 #include "QuickCastAbility.h"
+#include "../EnemyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "../SunsetHollowCharacter.h"
+#include "GameplayEffect.h"
 
 void UQuickCastAbility::TurnCharacterTowardsCursor(FVector& OutLocation, FVector& OutDirection) {
 	FVector WorldLocation;
@@ -17,6 +21,21 @@ void UQuickCastAbility::TurnCharacterTowardsCursor(FVector& OutLocation, FVector
 
 			OutLocation = OnHit.Location;
 			OutDirection = OnHit.Location - OwningActor->GetActorLocation();
+		}
+	}
+}
+
+void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy)
+{
+	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetEnemy)) {
+		if (!HitEnemies.Contains(Enemy)) {
+			HitEnemies.Add(Enemy);
+			FGameplayEffectSpecHandle SpecHandle =  MakeOutgoingGameplayEffectSpec(GEDealDamage);
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageTag, Damage * -1);
+			if (ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(GetOwningActorFromActorInfo())) {
+				PlayerCharacter->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), Enemy->GetAbilitySystemComponent());
+				UE_LOG(LogTemp, Warning, TEXT("Damaged Enemy!"));
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbility.h"
 #include "QuickCastAbility.generated.h"
 
+class AEnemyCharacter;
 /**
  * 
  */
@@ -17,4 +18,19 @@ class SUNSETHOLLOW_API UQuickCastAbility : public UGameplayAbility
 protected:
 	UFUNCTION(BlueprintCallable)
 	void TurnCharacterTowardsCursor(FVector& OutLocation, FVector& OutDirection);
+
+	UFUNCTION(BlueprintCallable)
+	void DamageEnemy(AActor* TargetEnemy);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	float Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	TSet<AEnemyCharacter*> HitEnemies;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Advanced, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> GEDealDamage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Advanced, meta = (AllowPrivateAccess = "true"))
+	FGameplayTag DamageTag;
 };
