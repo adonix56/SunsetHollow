@@ -127,6 +127,7 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 			if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
 				StopMovement();
 				SunsetCharacter->bIsAttacking = SetIsAttacking;
+				SunsetCharacter->ResetAttackCount();
 			}
 		}
 	}

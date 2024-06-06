@@ -33,6 +33,7 @@ public:
 
 	int GetAttackCount() { return AttackCount; }
 	void IncreaseAttackCount();
+	void ResetAttackCount() { AttackCount = 0; }
 
 protected:
 	virtual void BeginPlay();
