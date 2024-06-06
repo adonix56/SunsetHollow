@@ -90,7 +90,14 @@ protected:
 	void OnRightClickTriggered();
 	void OnRightClickReleased();
 
+	void ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking = false);
+
 	void OnSpacebarStarted();
+
+	void OnQStarted();
+	void OnWStarted();
+	void OnEStarted();
+	void OnRStarted();
 
 	void OnSwapMouse();
 

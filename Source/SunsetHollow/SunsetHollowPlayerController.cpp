@@ -72,6 +72,8 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(GameplayAbilityArray[0].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSpacebarStarted);
 
+		EnhancedInputComponent->BindAction(GameplayAbilityArray[4].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnQStarted);
+
 		// Setup touch input events
 		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
 		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ASunsetHollowPlayerController::OnTouchTriggered);
@@ -116,14 +118,39 @@ void ASunsetHollowPlayerController::OnRightClickReleased()
 	if (!bLeftClickMove) { OnSetDestinationReleased(); }
 }
 
-void ASunsetHollowPlayerController::OnSpacebarStarted() {
-	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
-	if (SunsetCharacter) {
-		UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
-		if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[0].GameplayAbility)) {
-			StopMovement();
+void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking)
+{
+	if (AbilityIndex >= 0 && AbilityIndex < GameplayAbilityArray.Num()) {
+		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
+		if (SunsetCharacter) {
+			UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
+			if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
+				StopMovement();
+				SunsetCharacter->bIsAttacking = SetIsAttacking;
+			}
 		}
 	}
+}
+
+void ASunsetHollowPlayerController::OnSpacebarStarted() {
+	ActivateAbilityByIndex(0);
+}
+
+void ASunsetHollowPlayerController::OnQStarted()
+{
+	ActivateAbilityByIndex(4, true);
+}
+
+void ASunsetHollowPlayerController::OnWStarted()
+{
+}
+
+void ASunsetHollowPlayerController::OnEStarted()
+{
+}
+
+void ASunsetHollowPlayerController::OnRStarted()
+{
 }
 
 void ASunsetHollowPlayerController::OnSwapMouse() {
