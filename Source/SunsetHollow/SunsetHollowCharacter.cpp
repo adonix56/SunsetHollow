@@ -82,3 +82,8 @@ void ASunsetHollowCharacter::IncreaseAttackCount() {
 	if (AttackCount == 2) AttackCount = 0;
 	else AttackCount++;
 }
+
+void ASunsetHollowCharacter::IgnoreEnemyCollision(bool IgnoreCollision)
+{
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, IgnoreCollision ? ECollisionResponse::ECR_Overlap : ECollisionResponse::ECR_Block);
+}

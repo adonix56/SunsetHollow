@@ -35,6 +35,9 @@ public:
 	void IncreaseAttackCount();
 	void ResetAttackCount() { AttackCount = 0; }
 
+	UFUNCTION(BlueprintCallable)
+	void IgnoreEnemyCollision(bool IgnoreCollision);
+
 protected:
 	virtual void BeginPlay();
 
