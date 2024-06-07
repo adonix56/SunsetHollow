@@ -73,6 +73,7 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(GameplayAbilityArray[0].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSpacebarStarted);
 
 		EnhancedInputComponent->BindAction(GameplayAbilityArray[4].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnQStarted);
+		EnhancedInputComponent->BindAction(GameplayAbilityArray[5].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnWStarted);
 
 		// Setup touch input events
 		//EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInputStarted);
@@ -144,6 +145,7 @@ void ASunsetHollowPlayerController::OnQStarted()
 
 void ASunsetHollowPlayerController::OnWStarted()
 {
+	ActivateAbilityByIndex(5, true);
 }
 
 void ASunsetHollowPlayerController::OnEStarted()
