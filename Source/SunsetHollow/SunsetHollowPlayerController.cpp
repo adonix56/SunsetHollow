@@ -124,11 +124,13 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 	if (AbilityIndex >= 0 && AbilityIndex < GameplayAbilityArray.Num()) {
 		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 		if (SunsetCharacter) {
-			UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
-			if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
-				StopMovement();
-				SunsetCharacter->bIsAttacking = SetIsAttacking;
-				SunsetCharacter->ResetAttackCount();
+			if (!SetIsAttacking || (SetIsAttacking && !SunsetCharacter->bIsAttacking)) {
+				UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
+				if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
+					StopMovement();
+					SunsetCharacter->bIsAttacking = SetIsAttacking;
+					SunsetCharacter->ResetAttackCount();
+				}
 			}
 		}
 	}

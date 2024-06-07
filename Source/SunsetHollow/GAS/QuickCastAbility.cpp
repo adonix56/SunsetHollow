@@ -8,6 +8,26 @@
 #include "../SunsetHollowCharacter.h"
 #include "GameplayEffect.h"
 
+FRotator UQuickCastAbility::GetRotatorDirectionFromVector(FVector DirectionVector)
+{
+	float Yaw = UKismetMathLibrary::DegAtan(UKismetMathLibrary::SafeDivide(DirectionVector.Y, DirectionVector.X));
+	Yaw += DirectionVector.X <= 0 ? 180 : 0;
+	return FRotator(0, Yaw, 0);
+}
+
+FVector UQuickCastAbility::GetRelativeLocationWithOffset(AActor* Actor, bool bWithOffset, FVector Offset)
+{
+	FVector TargetLocation = Actor->GetActorLocation();
+
+	if (bWithOffset) {
+		TargetLocation += Actor->GetActorForwardVector() * Offset.X;
+		TargetLocation += Actor->GetActorRightVector() * Offset.Y;
+		TargetLocation += Actor->GetActorUpVector() * Offset.Z;
+	}
+
+	return FVector(TargetLocation);
+}
+
 void UQuickCastAbility::TurnCharacterTowardsCursor(FVector& OutLocation, FVector& OutDirection) {
 	FVector WorldLocation;
 	FVector WorldDirection;

@@ -14,6 +14,13 @@ UCLASS()
 class SUNSETHOLLOW_API UQuickCastAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable)
+	FRotator GetRotatorDirectionFromVector(FVector DirectionVector);
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetRelativeLocationWithOffset(AActor* Actor, bool bWithOffset, FVector Offset);
 	
 protected:
 	UFUNCTION(BlueprintCallable)
