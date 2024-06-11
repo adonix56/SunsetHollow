@@ -113,7 +113,6 @@ void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDis
 	ElapsedTime = 0.f;
 	ZoomTime = zoomTime;
 	TargetDistance = targetDistance;
-	Speed = speed;
 	Delay = delay;
 	bZoom = true;
 }

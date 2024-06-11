@@ -58,7 +58,6 @@ protected:
 	float ElapsedTime;
 	float ZoomTime;
 	float TargetDistance;
-	float Speed;
 	float Delay;
 
 private:
