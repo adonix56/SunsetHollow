@@ -55,6 +55,26 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	if (bZoom) {
+		if (ElapsedTime < ZoomTime) {
+			float t = ElapsedTime / ZoomTime;
+			float start = 1400.f;
+			if (bReverse) CameraBoom->TargetArmLength = FMath::Lerp(TargetDistance, start, t);
+			else CameraBoom->TargetArmLength = FMath::Lerp(start, TargetDistance, t);
+			ElapsedTime += DeltaSeconds;
+		}
+		else if (Delay > 0) {
+			Delay -= DeltaSeconds;
+		}
+		else if (!bReverse) {
+			ElapsedTime = 0.f;
+			bReverse = true;
+		}
+		else {
+			bZoom = false;
+			bReverse = false;
+		}
+	}
 }
 
 void ASunsetHollowCharacter::BeginPlay()
@@ -86,4 +106,14 @@ void ASunsetHollowCharacter::IncreaseAttackCount() {
 void ASunsetHollowCharacter::IgnoreEnemyCollision(bool IgnoreCollision)
 {
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, IgnoreCollision ? ECollisionResponse::ECR_Overlap : ECollisionResponse::ECR_Block);
+}
+
+void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay)
+{
+	ElapsedTime = 0.f;
+	ZoomTime = zoomTime;
+	TargetDistance = targetDistance;
+	Speed = speed;
+	Delay = delay;
+	bZoom = true;
 }

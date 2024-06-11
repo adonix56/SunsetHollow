@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void IgnoreEnemyCollision(bool IgnoreCollision);
 
+	UFUNCTION(BlueprintCallable)
+	void ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay);
+
 protected:
 	virtual void BeginPlay();
 
@@ -49,6 +52,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	int AttackCount = 0;
+
+	bool bZoom;
+	bool bReverse;
+	float ElapsedTime;
+	float ZoomTime;
+	float TargetDistance;
+	float Speed;
+	float Delay;
 
 private:
 	/** Top down camera */
