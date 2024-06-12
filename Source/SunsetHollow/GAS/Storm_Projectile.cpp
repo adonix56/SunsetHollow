@@ -15,6 +15,7 @@ AStorm_Projectile::AStorm_Projectile()
 	CapsuleComponent->SetRelativeLocation(FVector(0.f, 0.f, 190.f));
 	CapsuleComponent->SetCapsuleHalfHeight(190.f);
 	CapsuleComponent->SetCapsuleRadius(80.f);
+	InitialLifeSpan = Lifespan;
 }
 
 // Called when the game starts or when spawned
@@ -23,7 +24,10 @@ void AStorm_Projectile::BeginPlay()
 	Super::BeginPlay();
 	ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if (PlayerCharacter) {
-		UAbilitySystemComponent* PlayerAbilitySystem = PlayerCharacter->GetAbilitySystemComponent();
+		PlayerAbilitySystem = PlayerCharacter->GetAbilitySystemComponent();
+		DamageSpec = PlayerAbilitySystem->MakeOutgoingSpec(GE_DealDamage, 0, PlayerAbilitySystem->MakeEffectContext());
+		//Spec.SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Event.Damage")), Damage * -1);
+		DamageSpec.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Event.Damage")), Damage * -1);
 	}
 }
 
@@ -31,6 +35,12 @@ void AStorm_Projectile::BeginPlay()
 void AStorm_Projectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	TimeSinceLastDamage += DeltaTime;
+	Timer += DeltaTime;
+	
+	//Deal damage at the end of every interval
+	if (TimeSinceLastDamage == 0 || TimeSinceLastDamage > DamageInterval) {
 
+	}
 }
 

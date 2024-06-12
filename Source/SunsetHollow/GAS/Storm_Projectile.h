@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameplayEffectTypes.h"
+#include "GameplayEffect.h"
 #include "Storm_Projectile.generated.h"
 
 class UCapsuleComponent;
 class UGameplayEffect;
+class UAbilitySystemComponent;
 
 UCLASS()
 class SUNSETHOLLOW_API AStorm_Projectile : public AActor
@@ -26,15 +28,17 @@ protected:
 	float Timer;
 	float TimeSinceLastDamage;
 	FGameplayEffectSpecHandle DamageSpec;
+	UAbilitySystemComponent* PlayerAbilitySystem;
+	//FGameplayEffectSpec Spec;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MaxScale;
+	float MaxScale = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float GrowthSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float Lifespan;
+	float Lifespan = 3.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float Damage;
@@ -51,4 +55,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetupDamageSpecHandle();
 };
