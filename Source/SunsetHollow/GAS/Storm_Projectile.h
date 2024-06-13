@@ -11,6 +11,8 @@
 class UCapsuleComponent;
 class UGameplayEffect;
 class UAbilitySystemComponent;
+class UParticleSystemComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class SUNSETHOLLOW_API AStorm_Projectile : public AActor
@@ -29,13 +31,12 @@ protected:
 	float TimeSinceLastDamage;
 	FGameplayEffectSpecHandle DamageSpec;
 	UAbilitySystemComponent* PlayerAbilitySystem;
-	//FGameplayEffectSpec Spec;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MaxScale = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float GrowthSpeed;
+	float GrowthSpeed = 3.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float Lifespan = 3.0f;
@@ -44,9 +45,17 @@ protected:
 	float Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DamageInterval;
+	float DamageInterval = 0.2f;
+
+	USceneComponent* SceneRootComponent;
 
 	UCapsuleComponent* CapsuleComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UParticleSystemComponent* Storm;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UProjectileMovementComponent* ProjectileMovement;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> GE_DealDamage;
@@ -54,7 +63,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetupDamageSpecHandle();
 };
