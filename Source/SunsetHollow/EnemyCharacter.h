@@ -10,6 +10,13 @@
 
 class UBehaviorTree;
 
+UENUM(BlueprintType)
+enum class DamageAppliedType : uint8 {
+	BASIC = 0 UMETA(DisplayName = "Basic"),
+	KNOCKUP = 1 UMETA(DisplayName = "Knockup"),
+	KNOCKBACK = 2 UMETA(DisplayName = "Knockback")
+};
+
 UCLASS()
 class SUNSETHOLLOW_API AEnemyCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -26,6 +33,15 @@ public:
 	float GetSightRadius() const { return SightRadius; }
 	
 	float GetLoseSightRadius() const { return SightRadius + LoseSightDistance; }
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_HandleDamageAnimation(DamageAppliedType DamageType);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	bool IsInDamageAnim = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+	bool CanRestartDamageAnim = true;
 
 protected:
 	// Called when the game starts or when spawned

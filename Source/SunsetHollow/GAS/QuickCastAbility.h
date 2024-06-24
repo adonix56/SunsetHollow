@@ -27,7 +27,7 @@ protected:
 	void TurnCharacterTowardsCursor(FVector& OutLocation, FVector& OutDirection);
 
 	UFUNCTION(BlueprintCallable)
-	void DamageEnemy(AActor* TargetEnemy);
+	void DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	float Damage;
