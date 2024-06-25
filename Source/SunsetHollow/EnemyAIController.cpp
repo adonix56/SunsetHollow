@@ -28,6 +28,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 			UBlackboardComponent* BlackboardTemp;
 			UseBlackboard(EnemyTree->BlackboardAsset, BlackboardTemp);
 			Blackboard = BlackboardTemp;
+			//Blackboard->SetValueAsObject(FName("Test"), Enemy->GetAbilitySystemComponent());
 			RunBehaviorTree(EnemyTree);
 			SetupSightConfig();
 		}

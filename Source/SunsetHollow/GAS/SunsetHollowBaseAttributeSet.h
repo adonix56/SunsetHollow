@@ -19,6 +19,8 @@ class SUNSETHOLLOW_API USunsetHollowBaseAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Health);
@@ -34,4 +36,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, MaxMana);
+
+	UPROPERTY(BlueprintReadOnly, Category = Attributes)
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Damage);
 };

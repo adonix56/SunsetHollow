@@ -9,6 +9,7 @@
 #include "EnemyCharacter.generated.h"
 
 class UBehaviorTree;
+class UAnimMontage;
 
 UENUM(BlueprintType)
 enum class DamageAppliedType : uint8 {
@@ -37,11 +38,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HandleDamageAnimation(DamageAppliedType DamageType);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
-	bool IsInDamageAnim = false;
+	void HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
-	bool CanRestartDamageAnim = true;
+	UFUNCTION(BlueprintCallable)
+	bool IsInDamageAnim();
 
 protected:
 	// Called when the game starts or when spawned
@@ -61,6 +61,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	float LoseSightDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* BasicAnim;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* KnockupAnim;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* KnockbackAnim;
+
+	UAnimMontage* PlayAnim;
+	FDelegateHandle HealthChangedDelegateHandle;
+	FGameplayTagContainer DamagedTagContainer;
+
+	void HealthChanged(const FOnAttributeChangeData& Data);
 
 public:	
 	// Called every frame

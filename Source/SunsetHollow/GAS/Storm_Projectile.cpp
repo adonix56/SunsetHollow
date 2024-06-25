@@ -26,8 +26,8 @@ AStorm_Projectile::AStorm_Projectile()
 	Storm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	Storm->SetWorldScale3D(FVector(0.0f));
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	ProjectileMovement->InitialSpeed = 200.f;
-	ProjectileMovement->MaxSpeed = 250.f;
+	ProjectileMovement->InitialSpeed = 400.f;
+	ProjectileMovement->MaxSpeed = 500.f;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 	InitialLifeSpan = Lifespan;
 }
@@ -57,7 +57,7 @@ void AStorm_Projectile::Tick(float DeltaTime)
 			AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(HitActor);
 			if (Enemy) {
 				PlayerAbilitySystem->ApplyGameplayEffectSpecToTarget(*DamageSpec.Data.Get(), Enemy->GetAbilitySystemComponent());
-				Enemy->BP_HandleDamageAnimation(DamageAppliedType::KNOCKUP);
+				Enemy->HandleDamageAnimation(DamageAppliedType::KNOCKUP);
 			}
 		}
 		TimeSinceLastDamage = 0;
