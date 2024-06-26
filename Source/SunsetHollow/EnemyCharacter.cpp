@@ -17,7 +17,7 @@ AEnemyCharacter::AEnemyCharacter()
 	DamagedTagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Damaged")));
 }
 
-void AEnemyCharacter::HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved, FVector LaunchDirection)
+void AEnemyCharacter::HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved, FVector LaunchDirection, bool FacePlayer)
 {
 	switch (DamageType) {
 	case DamageAppliedType::KNOCKUP:
@@ -37,10 +37,14 @@ void AEnemyCharacter::HandleDamageAnimation(DamageAppliedType DamageType, float 
 		if (DistanceMoved > 0.f && LaunchDirection.Length() > 0.f) {
 			if (ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn())) {
 				//FVector LaunchDirection = (GetActorLocation() - PlayerCharacter->GetActorLocation()).GetSafeNormal2D(0.002);
-				SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerCharacter->GetActorLocation()));
-				LaunchDirection.Z = 0.05f;
+				FVector SourceLocation = PlayerCharacter->GetActorLocation();
+				FVector TargetLocation = GetActorLocation();
+				SourceLocation.Z = 0;
+				TargetLocation.Z = 0;
+				if (FacePlayer) SetActorRotation(UKismetMathLibrary::FindLookAtRotation(TargetLocation, SourceLocation));
+				LaunchDirection.Z = 0.005f;
 				UE_LOG(LogTemp, Warning, TEXT("Launch %f, %f, %f"), LaunchDirection.X, LaunchDirection.Y, LaunchDirection.Z);
-				LaunchCharacter(LaunchDirection * DistanceMoved, true, false);
+				LaunchCharacter(LaunchDirection * DistanceMoved, true, true);
 			}
 		}
 	}

@@ -67,6 +67,8 @@ void AEnemyAIController::SetupSightConfig()
 
 void AEnemyAIController::OnTargetDetected(AActor* Actor, const FAIStimulus Stimulus)
 {
-	bool Sensed = Stimulus.WasSuccessfullySensed();
-	GetBlackboardComponent()->SetValueAsObject("Player", Sensed ? Cast<ASunsetHollowCharacter>(Actor) : nullptr);
+	if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(Actor)) {
+		bool Sensed = Stimulus.WasSuccessfullySensed();
+		GetBlackboardComponent()->SetValueAsObject("Player", Sensed ? Cast<ASunsetHollowCharacter>(Actor) : nullptr);
+	}
 }

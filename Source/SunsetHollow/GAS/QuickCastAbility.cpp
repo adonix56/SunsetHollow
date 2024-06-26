@@ -45,7 +45,7 @@ void UQuickCastAbility::TurnCharacterTowardsCursor(FVector& OutLocation, FVector
 	}
 }
 
-void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType, float MoveDistance, FVector Direction)
+void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType, float MoveDistance, FVector Direction, bool FacePlayer)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetEnemy)) {
 		if (!HitEnemies.Contains(Enemy)) {
@@ -54,7 +54,7 @@ void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy, DamageAppliedType Damag
 			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageTag, Damage);
 			if (ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(GetOwningActorFromActorInfo())) {
 				PlayerCharacter->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), Enemy->GetAbilitySystemComponent());
-				Enemy->HandleDamageAnimation(DamageType, MoveDistance, Direction);
+				Enemy->HandleDamageAnimation(DamageType, MoveDistance, Direction, FacePlayer);
 				UE_LOG(LogTemp, Warning, TEXT("Damaged Enemy!"));
 			}
 		}

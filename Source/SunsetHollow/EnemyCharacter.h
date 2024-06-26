@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HandleDamageAnimation(DamageAppliedType DamageType);
 
-	void HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector);
+	void HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector, bool FacePlayer = true);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInDamageAnim();

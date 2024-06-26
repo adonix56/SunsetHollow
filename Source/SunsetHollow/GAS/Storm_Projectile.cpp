@@ -57,7 +57,7 @@ void AStorm_Projectile::Tick(float DeltaTime)
 			AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(HitActor);
 			if (Enemy) {
 				PlayerAbilitySystem->ApplyGameplayEffectSpecToTarget(*DamageSpec.Data.Get(), Enemy->GetAbilitySystemComponent());
-				Enemy->HandleDamageAnimation(DamageAppliedType::KNOCKUP);
+				Enemy->HandleDamageAnimation(DamageAppliedType::KNOCKUP, 0.0f, FVector::ZeroVector, false);
 			}
 		}
 		TimeSinceLastDamage = 0;
