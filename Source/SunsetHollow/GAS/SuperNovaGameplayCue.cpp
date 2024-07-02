@@ -62,7 +62,6 @@ void ASuperNovaGameplayCue::Tick(float DeltaSeconds)
 
 bool ASuperNovaGameplayCue::OnActive_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SuperNova Activate"));
 	PlayAnim = true;
 	RepeatBlastParticleSystem->SetActive(true, true);
 	return false;
@@ -70,7 +69,6 @@ bool ASuperNovaGameplayCue::OnActive_Implementation(AActor* MyTarget, const FGam
 
 bool ASuperNovaGameplayCue::OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SuperNova Remove"));
 	RepeatBlastParticleSystem->SetActive(false);
 	for (UParticleSystemComponent* Blast : BlastParticleSystems) {
 		Blast->SetActive(false);
