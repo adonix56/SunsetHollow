@@ -27,10 +27,10 @@ protected:
 	void TurnCharacterTowardsCursor(FVector& OutLocation, FVector& OutDirection);
 
 	UFUNCTION(BlueprintCallable)
-	void DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FacePlayer = true);
+	void DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType, float Damage, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FacePlayer = true);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
-	float Damage;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	//float Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	TSet<AEnemyCharacter*> HitEnemies;
