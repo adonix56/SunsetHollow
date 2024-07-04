@@ -43,6 +43,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsInDamageAnim();
 
+	void StartDie();
+
+	UFUNCTION(BlueprintCallable)
+	void EndDie();
+
+	bool IsDying() { return Dying; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -71,11 +78,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* KnockbackAnim;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* DieAnim;
+
 	UAnimMontage* PlayAnim;
 	FDelegateHandle HealthChangedDelegateHandle;
 	FGameplayTagContainer DamagedTagContainer;
 
 	void HealthChanged(const FOnAttributeChangeData& Data);
+	bool Dying = false;
 
 public:	
 	// Called every frame

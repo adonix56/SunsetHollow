@@ -14,6 +14,15 @@ AEnemyAIController::AEnemyAIController(FObjectInitializer const& ObjectInitializ
 	SetupPerceptionSystem();
 }
 
+void AEnemyAIController::StartDie()
+{
+	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(GetPawn())) {
+		Enemy->StartDie();
+		UnPossess();
+		Destroy();
+	}
+}
+
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();

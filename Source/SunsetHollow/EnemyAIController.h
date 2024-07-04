@@ -17,6 +17,8 @@ class SUNSETHOLLOW_API AEnemyAIController : public AAIController
 public:
 	AEnemyAIController(FObjectInitializer const& ObjectInitializer);
 
+	void StartDie();
+
 protected:
 	virtual void BeginPlay() override;
 

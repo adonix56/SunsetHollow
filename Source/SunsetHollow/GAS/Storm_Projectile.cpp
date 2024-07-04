@@ -9,6 +9,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 // Sets default values
 AStorm_Projectile::AStorm_Projectile()
@@ -40,7 +41,8 @@ void AStorm_Projectile::BeginPlay()
 	if (PlayerCharacter) {
 		PlayerAbilitySystem = PlayerCharacter->GetAbilitySystemComponent();
 		DamageSpec = PlayerAbilitySystem->MakeOutgoingSpec(GE_DealDamage, 0, PlayerAbilitySystem->MakeEffectContext());
-		DamageSpec.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Event.Damage")), Damage * -1);
+		//DamageSpec.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Event.Damage")), Damage * -1);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpec, FGameplayTag::RequestGameplayTag(FName("Event.Damage")), Damage);
 	}
 }
 
