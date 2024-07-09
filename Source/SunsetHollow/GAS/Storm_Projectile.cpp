@@ -23,6 +23,7 @@ AStorm_Projectile::AStorm_Projectile()
 	CapsuleComponent->SetRelativeLocation(FVector(0.f, 0.f, 190.f));
 	CapsuleComponent->SetCapsuleHalfHeight(190.f);
 	CapsuleComponent->SetCapsuleRadius(80.f);
+	CapsuleComponent->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
 	Storm = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Storm"));
 	Storm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	Storm->SetWorldScale3D(FVector(0.0f));

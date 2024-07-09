@@ -105,7 +105,7 @@ void ASunsetHollowCharacter::IncreaseAttackCount() {
 
 void ASunsetHollowCharacter::IgnoreEnemyCollision(bool IgnoreCollision)
 {
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, IgnoreCollision ? ECollisionResponse::ECR_Overlap : ECollisionResponse::ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, IgnoreCollision ? ECollisionResponse::ECR_Overlap : ECollisionResponse::ECR_Block);
 }
 
 void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay)
