@@ -10,6 +10,7 @@
 
 class UBehaviorTree;
 class UAnimMontage;
+class UEnemyAbility;
 
 UENUM(BlueprintType)
 enum class DamageAppliedType : uint8 {
@@ -49,10 +50,16 @@ public:
 	void EndDie();
 
 	bool IsDying() { return Dying; }
+	
+	UFUNCTION(BlueprintCallable)
+	bool CastRandomAbility();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	TArray<TSubclassOf<UEnemyAbility>> AvailableAbilities;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	UAbilitySystemComponent* GASComponent;

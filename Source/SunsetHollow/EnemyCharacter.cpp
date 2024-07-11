@@ -88,6 +88,18 @@ void AEnemyCharacter::BeginPlay()
 	}
 }
 
+bool AEnemyCharacter::CastRandomAbility()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Cast Random Ability. %d Abilities to Cast"), GASComponent->GetActivatableAbilities().Num());
+	TArray<FGameplayAbilitySpec> ActivatableAbilities = GASComponent->GetActivatableAbilities();
+	for (FGameplayAbilitySpec Ability : ActivatableAbilities) {
+		if (GASComponent->TryActivateAbility(Ability.Handle)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void AEnemyCharacter::HealthChanged(const FOnAttributeChangeData& Data)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Health Changed by %f"), Data.NewValue);
