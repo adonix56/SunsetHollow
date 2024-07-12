@@ -15,7 +15,7 @@ class SUNSETHOLLOW_API UBTService_DistanceToTarget : public UBTService_Blackboar
 	GENERATED_BODY()
 
 public:
-	UBTService_DistanceToTarget();
+	UBTService_DistanceToTarget(FObjectInitializer const& ObjectInitializer);
 
 	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

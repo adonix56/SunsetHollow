@@ -3,10 +3,12 @@
 
 #include "BTService_DistanceToTarget.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "AIController.h"
 
-UBTService_DistanceToTarget::UBTService_DistanceToTarget()
+UBTService_DistanceToTarget::UBTService_DistanceToTarget(FObjectInitializer const& ObjectInitializer)
 {
+	bNotifyBecomeRelevant = true;
 	NodeName = TEXT("Distance To Target");
 }
 
@@ -14,7 +16,8 @@ void UBTService_DistanceToTarget::OnBecomeRelevant(UBehaviorTreeComponent& Owner
 {
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
 	if (AActor* Target = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()))) {
-		FVector SelfLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation();
+		AActor* SelfActor = OwnerComp.GetAIOwner()->GetPawn();
+		FVector SelfLocation = SelfActor->GetActorLocation();
 		FVector TargetLocation = Target->GetActorLocation();
 		float Distance = FVector::Dist2D(SelfLocation, TargetLocation);
 		OwnerComp.GetBlackboardComponent()->SetValueAsFloat(TEXT("DistanceToTarget"), Distance);
