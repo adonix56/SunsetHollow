@@ -37,14 +37,18 @@ void UEnemyAbility::TurnTowardsActor(AActor* LookAtActor)
 	OwningActor->SetActorRotation(LookAtRotation);
 }
 
-void UEnemyAbility::DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float Damage, float MoveDistance, FVector Direction, bool FaceMe)
+void UEnemyAbility::DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float DamageDealt, float MoveDistance, FVector Direction, bool FaceMe)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(GetOwningActorFromActorInfo())) {
 		FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(GEDealDamage);
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageTag, Damage);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageTag, DamageDealt);
 		if (ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(TargetPlayer)) {
-			Enemy->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), PlayerCharacter->GetAbilitySystemComponent());
-			//TODO: Player handle damage animation
+			if (!HitPlayers.Contains(PlayerCharacter)) {
+				HitPlayers.Add(PlayerCharacter);
+				Enemy->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), PlayerCharacter->GetAbilitySystemComponent());
+
+				//TODO: Player handle damage animation
+			}
 		}
 	}
 }

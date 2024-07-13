@@ -7,6 +7,8 @@
 #include "SunsetHollowCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/CapsuleComponent.h"
+#include "Abilities/GameplayAbilityTypes.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()

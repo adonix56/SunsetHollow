@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
 #include "../EnemyCharacter.h"
+#include "../SunsetHollowCharacter.h"
 #include "EnemyAbility.generated.h"
 
 /**
@@ -27,11 +28,17 @@ protected:
 	void TurnTowardsActor(AActor* LookAtActor);
 
 	UFUNCTION(BlueprintCallable)
-	void DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float Damage, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FaceMe = true);
+	void DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float DamageDealt, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FaceMe = true);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Advanced, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> GEDealDamage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Advanced, meta = (AllowPrivateAccess = "true"))
 	FGameplayTag DamageTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	TSet<ASunsetHollowCharacter*> HitPlayers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	float Damage;
 };

@@ -5,6 +5,7 @@
 #include "GameplayEffectExtension.h"
 #include "../EnemyCharacter.h"
 #include "../EnemyAIController.h"
+#include "../SunsetHollowCharacter.h"
 
 void USunsetHollowBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
@@ -15,13 +16,18 @@ void USunsetHollowBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEff
 		SetDamage(0.f);
 		
 		if (DamageDealt > 0.f) {
-			if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(Data.Target.GetOwner())) {
+			AActor* TargetActor = Data.Target.GetOwner();
+			if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetActor)) { // Enemy Taking Damage
 				if (AEnemyAIController* EnemyCont = Cast<AEnemyAIController>(Enemy->GetController())) {
 					SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
 					if (GetHealth() < 0.03f) {
 						EnemyCont->StartDie();
 					}
 				}
+			}
+
+			if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(TargetActor)) { // Player Taking Damage
+				SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
 			}
 		}
 	}
