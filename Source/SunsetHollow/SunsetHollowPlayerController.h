@@ -109,6 +109,9 @@ protected:
 	void OnTouchReleased();
 	void OnBasicAttack();
 
+	UFUNCTION()
+	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec GESpec, FActiveGameplayEffectHandle GEHandle);
+
 private:
 	FVector CachedDestination;
 

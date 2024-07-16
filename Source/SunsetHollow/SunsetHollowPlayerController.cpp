@@ -12,6 +12,7 @@
 #include "AbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
+#include "Abilities/GameplayAbility.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -130,6 +131,9 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 				UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
 				GASComponent->CancelAllAbilities();
 				if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
+					//GASComponent->OnActiveGameplayEffectAddedDelegateToSelf.AddUObject(this, &ASunsetHollowPlayerController::OnCooldownCheck);
+					//UGameplayAbility* CastedAbility = Cast<UGameplayAbility>(GameplayAbilityArray[AbilityIndex].GameplayAbility);
+					//UE_LOG(LogTemp, Warning, TEXT("Skill %s Cooldown %.2f"), CastedAbility->GetFName(), CastedAbility->GetCooldownTimeRemaining());
 					StopMovement();
 					SunsetCharacter->bIsAttacking = SetIsAttacking;
 					SunsetCharacter->ResetAttackCount();
@@ -241,4 +245,8 @@ void ASunsetHollowPlayerController::OnBasicAttack() {
 			SunsetCharacter->bIsAttacking = true;
 		}
 	}
+}
+
+void ASunsetHollowPlayerController::OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec GESpec, FActiveGameplayEffectHandle GEHandle)
+{
 }
