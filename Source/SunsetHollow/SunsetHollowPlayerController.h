@@ -26,6 +26,17 @@ struct FSunsetHollowGameplayAbilityInput {
 	UInputAction* InputAction;
 };
 
+UENUM(BlueprintType)
+enum class FUsableAbility : uint8 {
+	DASH = 0 UMETA(DisplayName = "Dash"),
+	GUILLOTINE = 1 UMETA(DisplayName = "Guillotine"),
+	STORM = 2 UMETA(DisplayName = "Storm"),
+	SPINSAW = 3 UMETA(DisplayName = "Spin Saw"),
+	SUPERNOVA = 4 UMETA(DisplayName = "Super Nova")
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, FUsableAbility, AbilityOnCooldown, float, CooldownDuration);
+
 UCLASS()
 class ASunsetHollowPlayerController : public APlayerController//, public IAbilitySystemInterface
 {
@@ -59,6 +70,9 @@ public:
 	/** Jump Input Action */
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	//UInputAction* SetDestinationTouchAction;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAbilityCooldown OnAbilityCooldownEvent;
 
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
@@ -110,7 +124,7 @@ protected:
 	void OnBasicAttack();
 
 	UFUNCTION()
-	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec GESpec, FActiveGameplayEffectHandle GEHandle);
+	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle GEHandle);
 
 private:
 	FVector CachedDestination;

@@ -22,6 +22,5 @@ EBTNodeResult::Type UBTTask_EnemyCastAbility::ExecuteTask(UBehaviorTreeComponent
 			return EBTNodeResult::Succeeded;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Failed Casting Ability! %d"), TEST++);
 	return EBTNodeResult::Failed;
 }

@@ -47,6 +47,7 @@ void ASunsetHollowPlayerController::OnPossess(APawn* aPawn)
 		for (FSunsetHollowGameplayAbilityInput GASInput : GameplayAbilityArray) {
 			SunsetCharacter->GetAbilitySystemComponent()->GiveAbility(FGameplayAbilitySpec(GASInput.GameplayAbility));
 		}
+		SunsetCharacter->GetAbilitySystemComponent()->OnActiveGameplayEffectAddedDelegateToSelf.AddUObject(this, &ASunsetHollowPlayerController::OnCooldownCheck);
 	}
 }
 
@@ -131,9 +132,6 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 				UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
 				GASComponent->CancelAllAbilities();
 				if (GASComponent->TryActivateAbilityByClass(GameplayAbilityArray[AbilityIndex].GameplayAbility)) {
-					//GASComponent->OnActiveGameplayEffectAddedDelegateToSelf.AddUObject(this, &ASunsetHollowPlayerController::OnCooldownCheck);
-					//UGameplayAbility* CastedAbility = Cast<UGameplayAbility>(GameplayAbilityArray[AbilityIndex].GameplayAbility);
-					//UE_LOG(LogTemp, Warning, TEXT("Skill %s Cooldown %.2f"), CastedAbility->GetFName(), CastedAbility->GetCooldownTimeRemaining());
 					StopMovement();
 					SunsetCharacter->bIsAttacking = SetIsAttacking;
 					SunsetCharacter->ResetAttackCount();
@@ -247,6 +245,17 @@ void ASunsetHollowPlayerController::OnBasicAttack() {
 	}
 }
 
-void ASunsetHollowPlayerController::OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec GESpec, FActiveGameplayEffectHandle GEHandle)
+void ASunsetHollowPlayerController::OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle GEHandle)
 {
+	FGameplayTagContainer GrantedTags;
+	GESpec.GetAllGrantedTags(GrantedTags);
+	FString(TagString) = GrantedTags.GetByIndex(0).GetTagName().ToString();
+	if (TagString.Contains("Cooldown")) {
+		if (TagString.Contains("Dash")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::DASH, GESpec.Duration);
+		else if (TagString.Contains("Guillotine")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::GUILLOTINE, GESpec.Duration);
+		else if (TagString.Contains("Storm")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::STORM, GESpec.Duration);
+		else if (TagString.Contains("SpinSaw")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::SPINSAW, GESpec.Duration);
+		else if (TagString.Contains("SuperNova")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::SUPERNOVA, GESpec.Duration);
+		UE_LOG(LogTemp, Warning, TEXT("OnCooldown!! %s"), *GrantedTags.GetByIndex(0).GetTagName().ToString());
+	}
 }
