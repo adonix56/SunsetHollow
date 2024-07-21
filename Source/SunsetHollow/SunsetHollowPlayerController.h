@@ -71,6 +71,8 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	//UInputAction* SetDestinationTouchAction;
 
+	void StartDie();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnAbilityCooldown OnAbilityCooldownEvent;
 

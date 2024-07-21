@@ -77,6 +77,11 @@ void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 	}
 }
 
+void ASunsetHollowCharacter::Destroy()
+{
+	Super::Destroy();
+}
+
 void ASunsetHollowCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -115,4 +120,11 @@ void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDis
 	TargetDistance = targetDistance;
 	Delay = delay;
 	bZoom = true;
+}
+
+void ASunsetHollowCharacter::StartDie()
+{
+	bIsDead = true;
+	//PlayAnimMontage(DieAnim);
+	UE_LOG(LogTemp, Warning, TEXT("Kill Character"));
 }

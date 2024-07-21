@@ -13,6 +13,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "Abilities/GameplayAbility.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -48,6 +49,15 @@ void ASunsetHollowPlayerController::OnPossess(APawn* aPawn)
 			SunsetCharacter->GetAbilitySystemComponent()->GiveAbility(FGameplayAbilitySpec(GASInput.GameplayAbility));
 		}
 		SunsetCharacter->GetAbilitySystemComponent()->OnActiveGameplayEffectAddedDelegateToSelf.AddUObject(this, &ASunsetHollowPlayerController::OnCooldownCheck);
+	}
+}
+
+void ASunsetHollowPlayerController::StartDie()
+{
+	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+		SunsetCharacter->GetMovementComponent()->Deactivate();
+		SunsetCharacter->StartDie();
+		//UnPossess();
 	}
 }
 
@@ -125,6 +135,9 @@ void ASunsetHollowPlayerController::OnRightClickReleased()
 
 void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking)
 {
+	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+		if (SunsetCharacter->IsDying()) return;
+	}
 	if (AbilityIndex >= 0 && AbilityIndex < GameplayAbilityArray.Num()) {
 		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 		if (SunsetCharacter) {
@@ -177,6 +190,9 @@ void ASunsetHollowPlayerController::OnInputStarted()
 // Triggered every frame when the input is held down
 void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 {
+	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+		if (SunsetCharacter->IsDying()) return;
+	}
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
@@ -211,6 +227,10 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
 {
+	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+		if (SunsetCharacter->IsDying()) return;
+	}
+
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles
@@ -235,6 +255,8 @@ void ASunsetHollowPlayerController::OnTouchReleased()
 
 void ASunsetHollowPlayerController::OnBasicAttack() {
 	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
+	if (SunsetCharacter->IsDying()) return;
+
 	if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
 		StopMovement();
 		int AbilityToActivate = SunsetCharacter->GetAttackCount() + 1;

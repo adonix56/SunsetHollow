@@ -41,6 +41,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay);
 
+	void StartDie();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsDying() const { return bIsDead; }
+
+	void Destroy();
+
 protected:
 	virtual void BeginPlay();
 
@@ -53,6 +60,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	int AttackCount = 0;
 
+	bool bIsDead;
 	bool bZoom;
 	bool bReverse;
 	float ElapsedTime;
@@ -68,6 +76,9 @@ private:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* DieAnim;
 
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 
