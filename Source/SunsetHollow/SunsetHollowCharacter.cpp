@@ -13,6 +13,7 @@
 #include "Engine/World.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "SunsetHollowGameMode.h"
 
 ASunsetHollowCharacter::ASunsetHollowCharacter()
 {
@@ -125,6 +126,14 @@ void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDis
 void ASunsetHollowCharacter::StartDie()
 {
 	bIsDead = true;
+	CharacterDeathEvent.Broadcast(this);
 	//PlayAnimMontage(DieAnim);
 	UE_LOG(LogTemp, Warning, TEXT("Kill Character"));
+	ASunsetHollowGameMode* CurGameMode = Cast<ASunsetHollowGameMode>(GetWorld()->GetAuthGameMode());
+	StimulusSource->UnregisterFromPerceptionSystem();
+	StimulusSource->UnregisterFromSense(TSubclassOf<UAISense_Sight>());
+	StimulusSource->DestroyComponent();
+	if (CurGameMode) {
+		CurGameMode->RespawnPlayer(this);
+	}
 }

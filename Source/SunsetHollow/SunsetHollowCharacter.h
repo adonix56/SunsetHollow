@@ -8,6 +8,8 @@
 #include "GAS/SunsetHollowBaseAttributeSet.h"
 #include "SunsetHollowCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FCharacterDeath, ASunsetHollowCharacter*)
+
 class UAbilitySystemComponent;
 
 UCLASS(Blueprintable)
@@ -48,6 +50,8 @@ public:
 
 	void Destroy();
 
+	FCharacterDeath CharacterDeathEvent;
+
 protected:
 	virtual void BeginPlay();
 
@@ -80,6 +84,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* DieAnim;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Perception, meta = (AllowPrivateAccess = "true"))
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 
 	void SetupStimulusSource();

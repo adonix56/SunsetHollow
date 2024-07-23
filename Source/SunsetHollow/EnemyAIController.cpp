@@ -44,6 +44,12 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 	}
 }
 
+void AEnemyAIController::OnPlayerDeath(ASunsetHollowCharacter* PlayerCharacter)
+{
+	GetBlackboardComponent()->SetValueAsObject("Player", nullptr);
+	PlayerCharacter->CharacterDeathEvent.Remove(DeathDelegateHandle);
+}
+
 void AEnemyAIController::SetupPerceptionSystem()
 {
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
@@ -77,7 +83,13 @@ void AEnemyAIController::SetupSightConfig()
 void AEnemyAIController::OnTargetDetected(AActor* Actor, const FAIStimulus Stimulus)
 {
 	if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(Actor)) {
-		bool Sensed = Stimulus.WasSuccessfullySensed();
+		bool Sensed = !Player->IsDying() && Stimulus.WasSuccessfullySensed();
+		if (Sensed) {
+			DeathDelegateHandle = Player->CharacterDeathEvent.AddUObject(this, &AEnemyAIController::OnPlayerDeath);
+		}
+		else {
+			Player->CharacterDeathEvent.Remove(DeathDelegateHandle);
+		}
 		GetBlackboardComponent()->SetValueAsObject("Player", Sensed ? Cast<ASunsetHollowCharacter>(Actor) : nullptr);
 	}
 }

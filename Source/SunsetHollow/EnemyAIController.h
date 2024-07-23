@@ -24,6 +24,9 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void OnPlayerDeath(ASunsetHollowCharacter* PlayerCharacter);
+	FDelegateHandle DeathDelegateHandle;
+
 private:
 	UAISenseConfig_Sight* SightConfig;
 
