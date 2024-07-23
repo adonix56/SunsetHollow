@@ -78,6 +78,9 @@ protected:
 	float TargetDistance;
 	float Delay;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	UCurveFloat* SpinsawCurve;
+
 	void HealthChanged(const FOnAttributeChangeData& Data);
 
 private:
