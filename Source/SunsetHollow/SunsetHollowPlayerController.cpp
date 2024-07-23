@@ -76,6 +76,7 @@ void ASunsetHollowPlayerController::StartRespawn()
 			SunsetCharacter->StartRespawn();
 			DeathUI->RemoveFromParent();
 			DeathUI = nullptr; // UE Garbage Collection will auto destroy unreferenced widgets
+			UE_LOG(LogTemp, Warning, TEXT("UI SHOULD GET DESTROYED IF I SEE THIS MESSAGE!"));
 		}
 	}
 }

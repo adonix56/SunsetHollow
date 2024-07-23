@@ -86,10 +86,17 @@ void ASunsetHollowCharacter::BeginPlay()
 
 	if (IsValid(GASComponent)) {
 		BaseAttributeSet = GASComponent->GetSet<USunsetHollowBaseAttributeSet>();
+		GASComponent->GetGameplayAttributeValueChangeDelegate(BaseAttributeSet->GetHealthAttribute()).AddUObject(this, &ASunsetHollowCharacter::HealthChanged);
 	}
 	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
 
 	//GASComponent->TryActivateAbilityByClass(TSubclassOf<>)
+}
+
+void ASunsetHollowCharacter::HealthChanged(const FOnAttributeChangeData& Data)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Health has changed by %f"), Data.NewValue);
+	HealthChangeEvent.Broadcast(Data.NewValue);
 }
 
 void ASunsetHollowCharacter::SetupStimulusSource()

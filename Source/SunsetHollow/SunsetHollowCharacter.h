@@ -9,6 +9,7 @@
 #include "SunsetHollowCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCharacterDeath, ASunsetHollowCharacter*)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChange, float, NewHealthValue);
 
 class UAbilitySystemComponent;
 
@@ -53,6 +54,9 @@ public:
 	bool IsRespawning() const { return bIsRespawning; }
 	FCharacterDeath CharacterDeathEvent;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChange HealthChangeEvent;
+
 protected:
 	virtual void BeginPlay();
 
@@ -73,6 +77,8 @@ protected:
 	float ZoomTime;
 	float TargetDistance;
 	float Delay;
+
+	void HealthChanged(const FOnAttributeChangeData& Data);
 
 private:
 	/** Top down camera */
