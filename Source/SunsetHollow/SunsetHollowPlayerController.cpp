@@ -60,8 +60,10 @@ void ASunsetHollowPlayerController::StartDie()
 		//SunsetCharacter->GetMovementComponent()->Deactivate();
 		SunsetCharacter->StartDie();
 		StopMovement();
-		DeathUI = CreateWidget<UUserWidget>(this, DeathUIClass);
-		DeathUI->AddToViewport(9999);
+		if (DeathUI == nullptr) {
+			DeathUI = CreateWidget<UUserWidget>(this, DeathUIClass);
+			DeathUI->AddToViewport(9999);
+		}
 		//UnPossess();
 	}
 }

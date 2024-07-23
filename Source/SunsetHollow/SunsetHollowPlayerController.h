@@ -131,6 +131,7 @@ protected:
 	UFUNCTION()
 	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle GEHandle);
 
+	UPROPERTY(Transient)
 	UUserWidget* DeathUI;
 
 private:
