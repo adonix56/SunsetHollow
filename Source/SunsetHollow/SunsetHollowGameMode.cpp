@@ -24,3 +24,14 @@ ASunsetHollowGameMode::ASunsetHollowGameMode()
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
 }
+
+void ASunsetHollowGameMode::SetRespawnTransform(FTransform NewTransform)
+{
+	RespawnTransform = NewTransform;
+}
+
+void ASunsetHollowGameMode::RespawnPlayer(ACharacter* Player)
+{
+	const FTransform* SpawnTransform = &RespawnTransform;
+	Player->SetActorTransform(RespawnTransform);
+}

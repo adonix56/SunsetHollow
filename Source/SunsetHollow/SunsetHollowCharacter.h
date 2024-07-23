@@ -44,12 +44,13 @@ public:
 	void ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay);
 
 	void StartDie();
+	void StartRespawn();
+	void EndRespawn();
 
 	UFUNCTION(BlueprintCallable)
 	bool IsDying() const { return bIsDead; }
-
-	void Destroy();
-
+	UFUNCTION(BlueprintCallable)
+	bool IsRespawning() const { return bIsRespawning; }
 	FCharacterDeath CharacterDeathEvent;
 
 protected:
@@ -65,6 +66,7 @@ protected:
 	int AttackCount = 0;
 
 	bool bIsDead;
+	bool bIsRespawning;
 	bool bZoom;
 	bool bReverse;
 	float ElapsedTime;

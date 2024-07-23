@@ -21,6 +21,8 @@ class SUNSETHOLLOW_API USunsetHollowBaseAttributeSet : public UAttributeSet
 public:
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
+	void Respawn();
+
 	UPROPERTY(BlueprintReadOnly, Category = Attributes)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USunsetHollowBaseAttributeSet, Health);

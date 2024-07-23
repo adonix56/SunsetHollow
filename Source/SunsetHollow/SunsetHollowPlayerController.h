@@ -73,6 +73,9 @@ public:
 
 	void StartDie();
 
+	UFUNCTION(BlueprintCallable)
+	void StartRespawn();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnAbilityCooldown OnAbilityCooldownEvent;
 
@@ -128,6 +131,8 @@ protected:
 	UFUNCTION()
 	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle GEHandle);
 
+	UUserWidget* DeathUI;
+
 private:
 	FVector CachedDestination;
 
@@ -140,6 +145,9 @@ private:
 
 	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> DeathUIClass;
 };
 
 

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SunsetHollowPlayerController.h"
+#include "SunsetHollowGameMode.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraSystem.h"
@@ -14,6 +15,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Blueprint/UserWidget.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -55,9 +57,24 @@ void ASunsetHollowPlayerController::OnPossess(APawn* aPawn)
 void ASunsetHollowPlayerController::StartDie()
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		SunsetCharacter->GetMovementComponent()->Deactivate();
+		//SunsetCharacter->GetMovementComponent()->Deactivate();
 		SunsetCharacter->StartDie();
+		StopMovement();
+		DeathUI = CreateWidget<UUserWidget>(this, DeathUIClass);
+		DeathUI->AddToViewport(9999);
 		//UnPossess();
+	}
+}
+
+void ASunsetHollowPlayerController::StartRespawn()
+{
+	if (ASunsetHollowGameMode* GameMode = Cast<ASunsetHollowGameMode>(GetWorld()->GetAuthGameMode())) {
+		if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+			GameMode->RespawnPlayer(SunsetCharacter);
+			SunsetCharacter->StartRespawn();
+			DeathUI->RemoveFromParent();
+			DeathUI = nullptr; // UE Garbage Collection will auto destroy unreferenced widgets
+		}
 	}
 }
 

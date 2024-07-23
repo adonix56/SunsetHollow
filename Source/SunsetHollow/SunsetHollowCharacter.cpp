@@ -45,6 +45,8 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	TopDownCameraComponent->PostProcessSettings.ColorGamma = FVector4(0.7f, 0.7f, 0.7f);
+	TopDownCameraComponent->PostProcessSettings.ColorSaturation = FVector4();
 
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
@@ -76,11 +78,6 @@ void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 			bReverse = false;
 		}
 	}
-}
-
-void ASunsetHollowCharacter::Destroy()
-{
-	Super::Destroy();
 }
 
 void ASunsetHollowCharacter::BeginPlay()
@@ -126,14 +123,29 @@ void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDis
 void ASunsetHollowCharacter::StartDie()
 {
 	bIsDead = true;
+	GASComponent->CancelAllAbilities();
+	GetMesh()->GetAnimInstance()->Montage_Stop(0.2f);
+	TopDownCameraComponent->PostProcessSettings.bOverride_ColorSaturation = true;
+	TopDownCameraComponent->PostProcessSettings.bOverride_ColorGamma = true;
 	CharacterDeathEvent.Broadcast(this);
 	//PlayAnimMontage(DieAnim);
-	UE_LOG(LogTemp, Warning, TEXT("Kill Character"));
-	ASunsetHollowGameMode* CurGameMode = Cast<ASunsetHollowGameMode>(GetWorld()->GetAuthGameMode());
-	StimulusSource->UnregisterFromPerceptionSystem();
-	StimulusSource->UnregisterFromSense(TSubclassOf<UAISense_Sight>());
-	StimulusSource->DestroyComponent();
-	if (CurGameMode) {
-		CurGameMode->RespawnPlayer(this);
-	}
+}
+
+void ASunsetHollowCharacter::StartRespawn()
+{
+	bIsRespawning = true;
+	TopDownCameraComponent->PostProcessSettings.bOverride_ColorSaturation = false;
+	TopDownCameraComponent->PostProcessSettings.bOverride_ColorGamma = false;
+
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowCharacter::EndRespawn, 2.03f, false);
+
+	const_cast<USunsetHollowBaseAttributeSet*>(BaseAttributeSet)->Respawn();
+}
+
+void ASunsetHollowCharacter::EndRespawn()
+{
+	bIsDead = false;
+	bIsRespawning = false;
+	//GetMovementComponent()->Activate(true);
 }

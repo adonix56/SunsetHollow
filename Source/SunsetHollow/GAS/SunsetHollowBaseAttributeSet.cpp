@@ -38,3 +38,8 @@ void USunsetHollowBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEff
 		}
 	}
 }
+
+void USunsetHollowBaseAttributeSet::Respawn()
+{
+	SetHealth(GetMaxHealth());
+}

@@ -13,7 +13,13 @@ class ASunsetHollowGameMode : public AGameModeBase
 
 public:
 	ASunsetHollowGameMode();
+
+	UFUNCTION(BlueprintCallable)
+	void SetRespawnTransform(FTransform NewTransform);
+
+	void RespawnPlayer(ACharacter* Player);
+
+protected:
+
+	FTransform RespawnTransform;
 };
-
-
-
