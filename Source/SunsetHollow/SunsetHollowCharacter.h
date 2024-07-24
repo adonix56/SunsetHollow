@@ -57,6 +57,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChange HealthChangeEvent;
 
+	UFUNCTION(BlueprintCallable)
+	void JumpToDestination(FVector Destination);
+
 protected:
 	virtual void BeginPlay();
 

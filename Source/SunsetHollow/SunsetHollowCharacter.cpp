@@ -14,6 +14,7 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
 #include "SunsetHollowGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 ASunsetHollowCharacter::ASunsetHollowCharacter()
 {
@@ -77,6 +78,15 @@ void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 			bZoom = false;
 			bReverse = false;
 		}
+	}
+}
+
+void ASunsetHollowCharacter::JumpToDestination(FVector Destination)
+{
+	FVector LaunchVelocity;
+	Destination.Z += 250.f;
+	if (UGameplayStatics::SuggestProjectileVelocity_CustomArc(GetWorld(), LaunchVelocity, GetActorLocation(), Destination)) {
+		LaunchCharacter(LaunchVelocity, true, true);
 	}
 }
 
