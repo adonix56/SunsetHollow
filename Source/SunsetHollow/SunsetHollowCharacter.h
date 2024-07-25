@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "GAS/SunsetHollowBaseAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "SunsetHollowCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCharacterDeath, ASunsetHollowCharacter*)
@@ -52,6 +53,8 @@ public:
 	bool IsDying() const { return bIsDead; }
 	UFUNCTION(BlueprintCallable)
 	bool IsRespawning() const { return bIsRespawning; }
+	UFUNCTION(BlueprintCallable)
+	bool IsControllable() const { return !(GetCharacterMovement()->IsFalling()) && !bIsDead; }
 	FCharacterDeath CharacterDeathEvent;
 
 	UPROPERTY(BlueprintAssignable)

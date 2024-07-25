@@ -156,7 +156,7 @@ void ASunsetHollowPlayerController::OnRightClickReleased()
 void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking)
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (SunsetCharacter->IsDying()) return;
+		if (!SunsetCharacter->IsControllable()) return;
 	}
 	if (AbilityIndex >= 0 && AbilityIndex < GameplayAbilityArray.Num()) {
 		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
@@ -211,7 +211,7 @@ void ASunsetHollowPlayerController::OnInputStarted()
 void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (SunsetCharacter->IsDying()) return;
+		if (!SunsetCharacter->IsControllable()) return;
 	}
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
@@ -248,7 +248,7 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (SunsetCharacter->IsDying()) return;
+		if (!SunsetCharacter->IsControllable()) return;
 	}
 
 	if (FollowTime <= ShortPressThreshold)
@@ -275,7 +275,7 @@ void ASunsetHollowPlayerController::OnTouchReleased()
 
 void ASunsetHollowPlayerController::OnBasicAttack() {
 	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
-	if (SunsetCharacter->IsDying()) return;
+	if (!SunsetCharacter->IsControllable()) return;
 
 	if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
 		StopMovement();
