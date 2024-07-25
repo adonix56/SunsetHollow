@@ -52,7 +52,6 @@ void AInteractable::NotifyActorEndOverlap(AActor* OtherActor)
 void AInteractable::Interact()
 {
 	OnInteractEvent.ExecuteIfBound(InteractingActor);
-	UE_LOG(LogTemp, Warning, TEXT("Interactable is called!"));
 }
 
 // Called when the game starts or when spawned

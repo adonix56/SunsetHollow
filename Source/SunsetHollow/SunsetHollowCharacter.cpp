@@ -14,6 +14,7 @@
 #include "Perception/AISense_Sight.h"
 #include "SunsetHollowGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ASunsetHollowCharacter::ASunsetHollowCharacter()
 {
@@ -85,6 +86,12 @@ void ASunsetHollowCharacter::JumpToDestination(FVector Destination)
 	FVector LaunchVelocity;
 	Destination.Z += 250.f;
 	if (UGameplayStatics::SuggestProjectileVelocity_CustomArc(GetWorld(), LaunchVelocity, GetActorLocation(), Destination)) {
+		FVector Start = GetActorLocation();
+		FVector End = Destination;
+		Start.Z = 0;
+		End.Z = 0;
+		SetActorRotation(UKismetMathLibrary::FindLookAtRotation(Start, End));
+		GetController()->StopMovement();
 		LaunchCharacter(LaunchVelocity, true, true);
 	}
 }

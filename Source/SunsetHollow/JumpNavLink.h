@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Navigation/NavLinkProxy.h"
 #include "Components/BoxComponent.h"
+#include "Interactable.h"
 #include "JumpNavLink.generated.h"
 
 /**
@@ -17,10 +18,14 @@ class SUNSETHOLLOW_API AJumpNavLink : public ANavLinkProxy
 	
 public:
 
-	AJumpNavLink(FObjectInitializer const& ObjectInitializer);
+	virtual void BeginPlay() override;
 
 protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Interactable, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AInteractable> InteractableBP;
+
 	UFUNCTION()
-	void SmartLinkReached(AActor* MovingActor, const FVector& DestinationPoint);
+	void Jump(AActor* InteractingActor);
 
 };
