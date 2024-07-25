@@ -81,6 +81,18 @@ void ASunsetHollowPlayerController::StartRespawn()
 	}
 }
 
+void ASunsetHollowPlayerController::SetInteractable(AInteractable* NewInteractable)
+{
+	CurrentInteractable = NewInteractable;
+}
+
+void ASunsetHollowPlayerController::RemoveInteractable(AInteractable* Interactable)
+{
+	if (CurrentInteractable == Interactable) {
+		CurrentInteractable = nullptr;
+	}
+}
+
 void ASunsetHollowPlayerController::SetupInputComponent()
 {
 	// set up gameplay key bindings
@@ -101,6 +113,8 @@ void ASunsetHollowPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(RightClick, ETriggerEvent::Canceled, this, &ASunsetHollowPlayerController::OnRightClickReleased);
 
 		EnhancedInputComponent->BindAction(SwapMouse, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSwapMouse);
+
+		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnInteract);
 
 		EnhancedInputComponent->BindAction(GameplayAbilityArray[0].InputAction, ETriggerEvent::Started, this, &ASunsetHollowPlayerController::OnSpacebarStarted);
 
@@ -176,6 +190,13 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 
 void ASunsetHollowPlayerController::OnSpacebarStarted() {
 	ActivateAbilityByIndex(0);
+}
+
+void ASunsetHollowPlayerController::OnInteract()
+{
+	if (CurrentInteractable) {
+		CurrentInteractable->Interact();
+	}
 }
 
 void ASunsetHollowPlayerController::OnQStarted()

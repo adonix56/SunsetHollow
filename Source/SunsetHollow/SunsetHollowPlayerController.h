@@ -8,6 +8,7 @@
 //#include "AbilitySystemInterface.h"
 #include "Templates\SubclassOf.h"
 #include "SunsetHollowCharacter.h"
+#include "Interactable.h"
 #include "SunsetHollowPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
@@ -67,6 +68,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SwapMouse;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* Interact;
+
 	/** Jump Input Action */
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	//UInputAction* SetDestinationTouchAction;
@@ -79,6 +83,15 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAbilityCooldown OnAbilityCooldownEvent;
 
+	UFUNCTION(BlueprintCallable)
+	void SetInteractable(AInteractable* NewInteractable);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveInteractable(AInteractable* Interactable);
+
+	UFUNCTION(BlueprintCallable)
+	bool HasInteractable() { return CurrentInteractable != nullptr; }
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -90,6 +103,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS)
 	TArray<FSunsetHollowGameplayAbilityInput> GameplayAbilityArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input)
+	AInteractable* CurrentInteractable;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	//UAbilitySystemComponent* GASComponent;
@@ -112,6 +128,7 @@ protected:
 	void ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking = false);
 
 	void OnSpacebarStarted();
+	void OnInteract();
 
 	void OnQStarted();
 	void OnWStarted();
