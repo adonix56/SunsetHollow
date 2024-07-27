@@ -261,6 +261,7 @@ void ASunsetHollowPlayerController::OnRStarted()
 
 void ASunsetHollowPlayerController::OnSwapMouse() {
 	bLeftClickMove = !bLeftClickMove;
+	OnSwapMouseEvent.ExecuteIfBound(bLeftClickMove);
 }
 
 void ASunsetHollowPlayerController::OnInputStarted()

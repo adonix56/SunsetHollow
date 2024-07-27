@@ -38,6 +38,7 @@ enum class EUsableAbility : uint8 {
 ENUM_RANGE_BY_FIRST_AND_LAST(EUsableAbility, EUsableAbility::DASH, EUsableAbility::SUPERNOVA);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, EUsableAbility, AbilityOnCooldown, float, CooldownDuration);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSwapMouse, bool, LeftClickMove);
 
 UCLASS()
 class ASunsetHollowPlayerController : public APlayerController
@@ -88,6 +89,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAbilityCooldown OnAbilityCooldownEvent;
+	UPROPERTY(BlueprintReadWrite)
+	FOnSwapMouse OnSwapMouseEvent;
 
 	UFUNCTION(BlueprintCallable)
 	void SetInteractable(AInteractable* NewInteractable);

@@ -31,6 +31,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStateChanged OnGameStateChangedEvent;
 
+	UFUNCTION(BlueprintCallable)
 	EGameState GetCurrentGameState() const { return CurrentGameState; }
 	UFUNCTION()
 	void ProgressGameState();
