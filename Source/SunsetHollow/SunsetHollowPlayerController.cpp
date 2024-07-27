@@ -26,11 +26,11 @@ ASunsetHollowPlayerController::ASunsetHollowPlayerController()
 	DefaultMouseCursor = EMouseCursor::Default;
 	CachedDestination = FVector::ZeroVector;
 	FollowTime = 0.f;
+
 	for (EUsableAbility Ability : TEnumRange<EUsableAbility>()) {
 		CooldownManager.Add(Ability, -1.0f);
 	}
 	OnAbilityCooldownEvent.AddDynamic(this, &ASunsetHollowPlayerController::StartCooldown);
-	//GASComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GAS Component"));
 }
 
 void ASunsetHollowPlayerController::TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction)
@@ -50,6 +50,7 @@ void ASunsetHollowPlayerController::BeginPlay()
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		GameState = Cast<ASunsetHollowGameState>(GetWorld()->GetGameState());
 	}
 }
 
@@ -198,7 +199,8 @@ void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, boo
 }
 
 void ASunsetHollowPlayerController::OnSpacebarStarted() {
-	ActivateAbilityByIndex(0);
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_DASH) 
+		ActivateAbilityByIndex(0);
 }
 
 void ASunsetHollowPlayerController::OnInteract()
@@ -235,22 +237,26 @@ bool ASunsetHollowPlayerController::IsControllable()
 
 void ASunsetHollowPlayerController::OnQStarted()
 {
-	ActivateAbilityByIndex(4, true);
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_SKILLS)
+		ActivateAbilityByIndex(4, true);
 }
 
 void ASunsetHollowPlayerController::OnWStarted()
 {
-	ActivateAbilityByIndex(5, true);
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_SKILLS)
+		ActivateAbilityByIndex(5, true);
 }
 
 void ASunsetHollowPlayerController::OnEStarted()
 {
-	ActivateAbilityByIndex(6, true);
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_SKILLS)
+		ActivateAbilityByIndex(6, true);
 }
 
 void ASunsetHollowPlayerController::OnRStarted()
 {
-	ActivateAbilityByIndex(7, true);
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_SKILLS)
+		ActivateAbilityByIndex(7, true);
 }
 
 void ASunsetHollowPlayerController::OnSwapMouse() {
@@ -329,15 +335,17 @@ void ASunsetHollowPlayerController::OnTouchReleased()
 }
 
 void ASunsetHollowPlayerController::OnBasicAttack() {
-	ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
-	if (!IsControllable()) return;
+	if (GameState && GameState->GetCurrentGameState() >= EGameState::TUTORIAL_AA) {
+		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
+		if (!IsControllable()) return;
 
-	if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
-		StopMovement();
-		int AbilityToActivate = SunsetCharacter->GetAttackCount() + 1;
-		if (SunsetCharacter->GetAbilitySystemComponent()->TryActivateAbilityByClass(GameplayAbilityArray[AbilityToActivate].GameplayAbility)) {
-			SunsetCharacter->IncreaseAttackCount();
-			SunsetCharacter->bIsAttacking = true;
+		if (SunsetCharacter && !SunsetCharacter->bIsAttacking) {
+			StopMovement();
+			int AbilityToActivate = SunsetCharacter->GetAttackCount() + 1;
+			if (SunsetCharacter->GetAbilitySystemComponent()->TryActivateAbilityByClass(GameplayAbilityArray[AbilityToActivate].GameplayAbility)) {
+				SunsetCharacter->IncreaseAttackCount();
+				SunsetCharacter->bIsAttacking = true;
+			}
 		}
 	}
 }

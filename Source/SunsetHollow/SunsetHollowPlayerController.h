@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
-//#include "AbilitySystemInterface.h"
 #include "Templates\SubclassOf.h"
 #include "SunsetHollowCharacter.h"
 #include "Interactable.h"
@@ -41,7 +40,7 @@ ENUM_RANGE_BY_FIRST_AND_LAST(EUsableAbility, EUsableAbility::DASH, EUsableAbilit
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, EUsableAbility, AbilityOnCooldown, float, CooldownDuration);
 
 UCLASS()
-class ASunsetHollowPlayerController : public APlayerController//, public IAbilitySystemInterface
+class ASunsetHollowPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
@@ -168,6 +167,7 @@ protected:
 
 	UPROPERTY(Transient)
 	UUserWidget* DeathUI;
+	ASunsetHollowGameState* GameState;
 
 private:
 	FVector CachedDestination;
