@@ -9,6 +9,7 @@ ASunsetHollowGameMode::ASunsetHollowGameMode()
 {
 	// use our custom PlayerController class
 	PlayerControllerClass = ASunsetHollowPlayerController::StaticClass();
+	GameStateClass = ASunsetHollowGameState::StaticClass();
 
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownCharacter"));
