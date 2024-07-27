@@ -28,10 +28,12 @@ void USunsetHollowBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEff
 			}
 
 			if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(TargetActor)) { // Player Taking Damage
-				if (ASunsetHollowPlayerController* PlayerCont = Cast<ASunsetHollowPlayerController>(Player->GetController())) {
-					SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
-					if (GetHealth() < 0.03f) {
-						PlayerCont->StartDie();
+				if (!Player->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.Invincible")))) {
+					if (ASunsetHollowPlayerController* PlayerCont = Cast<ASunsetHollowPlayerController>(Player->GetController())) {
+						SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
+						if (GetHealth() < 0.03f) {
+							PlayerCont->StartDie();
+						}
 					}
 				}
 			}

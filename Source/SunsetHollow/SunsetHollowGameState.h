@@ -33,7 +33,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	EGameState GetCurrentGameState() const { return CurrentGameState; }
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ProgressGameState();
 
 protected:
