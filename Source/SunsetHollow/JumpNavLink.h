@@ -21,11 +21,21 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
+	EGameState ActivatingGameState;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
+	EGameState DeactivatingGameState;
+	ASunsetHollowGameState* GameState;
+	AInteractable* Interactable;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Interactable, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AInteractable> InteractableBP;
 
 	UFUNCTION()
 	void Jump(AActor* InteractingActor);
-
+	UFUNCTION()
+	void OnActivating(EGameState NewGameState);
+	UFUNCTION()
+	void OnDeactivating(EGameState NewGameState);
+	void CreateInteractable();
 };

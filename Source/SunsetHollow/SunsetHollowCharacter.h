@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "GAS/SunsetHollowBaseAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "SunsetHollowGameState.h"
 #include "SunsetHollowCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCharacterDeath, ASunsetHollowCharacter*)
@@ -63,6 +64,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void JumpToDestination(FVector Destination);
 
+	UFUNCTION(BlueprintCallable)
+	float GetPlayerDistance() { return DistanceMoved; }
+
 protected:
 	virtual void BeginPlay();
 
@@ -83,6 +87,9 @@ protected:
 	float ZoomTime;
 	float TargetDistance;
 	float Delay;
+	float DistanceMoved;
+	ASunsetHollowGameState* GameState;
+	FVector LastLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	UCurveFloat* SpinsawCurve;

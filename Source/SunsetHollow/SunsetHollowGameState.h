@@ -27,6 +27,7 @@ class SUNSETHOLLOW_API ASunsetHollowGameState : public AGameStateBase
 	GENERATED_BODY()
 
 public:
+	const float TutorialMovementTotal = 1000.f;
 	FOnGameStateChanged OnGameStateChangedEvent;
 
 	EGameState GetCurrentGameState() const { return CurrentGameState; }

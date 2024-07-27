@@ -59,6 +59,13 @@ ASunsetHollowCharacter::ASunsetHollowCharacter()
 void ASunsetHollowCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	if (GameState && GameState->GetCurrentGameState() == EGameState::TUTORIAL_MOVEMENT) {
+		FVector NewLocation = GetActorLocation();
+		FVector MovementDelta = NewLocation - LastLocation;
+		DistanceMoved += MovementDelta.Size();
+		LastLocation = NewLocation;
+		if (DistanceMoved > GameState->TutorialMovementTotal) GameState->ProgressGameState();
+	}
 	if (bZoom) {
 		if (ElapsedTime < ZoomTime) {
 			float t = ElapsedTime / ZoomTime;
@@ -103,6 +110,8 @@ void ASunsetHollowCharacter::BeginPlay()
 	if (IsValid(GASComponent)) {
 		BaseAttributeSet = GASComponent->GetSet<USunsetHollowBaseAttributeSet>();
 		GASComponent->GetGameplayAttributeValueChangeDelegate(BaseAttributeSet->GetHealthAttribute()).AddUObject(this, &ASunsetHollowCharacter::HealthChanged);
+		GameState = Cast<ASunsetHollowGameState>(GetWorld()->GetGameState());
+		LastLocation = GetActorLocation();
 	}
 	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
 
