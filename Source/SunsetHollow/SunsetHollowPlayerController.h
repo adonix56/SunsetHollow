@@ -36,6 +36,8 @@ enum class EUsableAbility : uint8 {
 	SUPERNOVA = 4 UMETA(DisplayName = "Super Nova")
 };
 
+ENUM_RANGE_BY_FIRST_AND_LAST(EUsableAbility, EUsableAbility::DASH, EUsableAbility::SUPERNOVA);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, EUsableAbility, AbilityOnCooldown, float, CooldownDuration);
 
 UCLASS()
@@ -45,6 +47,11 @@ class ASunsetHollowPlayerController : public APlayerController//, public IAbilit
 
 public:
 	ASunsetHollowPlayerController();
+
+	void TickActor(float DeltaTime, enum ELevelTick TickType, FActorTickFunction& ThisTickFunction) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	TMap<EUsableAbility, float> CooldownManager;
 
 	/** Time Threshold to know if it was a short press */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -92,6 +99,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool HasInteractable() { return CurrentInteractable != nullptr; }
 
+	UFUNCTION(BlueprintCallable)
+	void SetControllableState(bool CanControl);
+
+	UFUNCTION(BlueprintCallable)
+	float GetAbilityCooldown(EUsableAbility Ability) { return CooldownManager[Ability]; }
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -131,7 +144,6 @@ protected:
 	void OnInteract();
 	bool bControllable;
 	void EndInteract();
-	void SetContollableState(bool CanControl);
 	bool IsControllable();
 
 	void OnQStarted();
@@ -151,6 +163,8 @@ protected:
 
 	UFUNCTION()
 	void OnCooldownCheck(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle GEHandle);
+	UFUNCTION()
+	void StartCooldown(EUsableAbility Ability, float CooldownDuration);
 
 	UPROPERTY(Transient)
 	UUserWidget* DeathUI;

@@ -26,8 +26,19 @@ ASunsetHollowPlayerController::ASunsetHollowPlayerController()
 	DefaultMouseCursor = EMouseCursor::Default;
 	CachedDestination = FVector::ZeroVector;
 	FollowTime = 0.f;
-
+	for (EUsableAbility Ability : TEnumRange<EUsableAbility>()) {
+		CooldownManager.Add(Ability, -1.0f);
+	}
+	OnAbilityCooldownEvent.AddDynamic(this, &ASunsetHollowPlayerController::StartCooldown);
 	//GASComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GAS Component"));
+}
+
+void ASunsetHollowPlayerController::TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction)
+{
+	Super::TickActor(DeltaTime, TickType, ThisTickFunction);
+	for (EUsableAbility Ability : TEnumRange<EUsableAbility>()) {
+		if (CooldownManager[Ability] > 0.0f) CooldownManager[Ability] -= DeltaTime;
+	}
 }
 
 void ASunsetHollowPlayerController::BeginPlay()
@@ -193,7 +204,7 @@ void ASunsetHollowPlayerController::OnSpacebarStarted() {
 void ASunsetHollowPlayerController::OnInteract()
 {
 	if (CurrentInteractable) {
-		SetContollableState(false);
+		SetControllableState(false);
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowPlayerController::EndInteract, 0.1f, false); // Prevents Movement on next frame.
 		CurrentInteractable->Interact();
@@ -202,11 +213,12 @@ void ASunsetHollowPlayerController::OnInteract()
 
 void ASunsetHollowPlayerController::EndInteract()
 {
-	SetContollableState(true);
+	SetControllableState(true);
 }
 
-void ASunsetHollowPlayerController::SetContollableState(bool CanControl)
+void ASunsetHollowPlayerController::SetControllableState(bool CanControl)
 {
+	if (!CanControl) StopMovement();
 	bControllable = CanControl;
 }
 
@@ -343,4 +355,9 @@ void ASunsetHollowPlayerController::OnCooldownCheck(UAbilitySystemComponent* ASC
 		else if (TagString.Contains("SuperNova")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::SUPERNOVA, GESpec.Duration);
 		UE_LOG(LogTemp, Warning, TEXT("OnCooldown!! %s"), *GrantedTags.GetByIndex(0).GetTagName().ToString());
 	}
+}
+
+void ASunsetHollowPlayerController::StartCooldown(EUsableAbility Ability, float CooldownDuration)
+{
+	CooldownManager[Ability] = CooldownDuration;
 }
