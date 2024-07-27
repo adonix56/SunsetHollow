@@ -45,7 +45,7 @@ void UQuickCastAbility::TurnCharacterTowardsCursor(FVector& OutLocation, FVector
 	}
 }
 
-void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy, DamageAppliedType DamageType, float Damage, float MoveDistance, FVector Direction, bool FacePlayer)
+void UQuickCastAbility::DamageEnemy(AActor* TargetEnemy, EDamageAppliedType DamageType, float Damage, float MoveDistance, FVector Direction, bool FacePlayer)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetEnemy)) {
 		if (!HitEnemies.Contains(Enemy)) {

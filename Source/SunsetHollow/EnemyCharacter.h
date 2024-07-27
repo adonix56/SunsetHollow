@@ -13,7 +13,7 @@ class UAnimMontage;
 class UEnemyAbility;
 
 UENUM(BlueprintType)
-enum class DamageAppliedType : uint8 {
+enum class EDamageAppliedType : uint8 {
 	BASIC = 0 UMETA(DisplayName = "Basic"),
 	KNOCKUP = 1 UMETA(DisplayName = "Knockup"),
 	KNOCKBACK = 2 UMETA(DisplayName = "Knockback")
@@ -37,9 +37,9 @@ public:
 	float GetLoseSightRadius() const { return SightRadius + LoseSightDistance; }
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_HandleDamageAnimation(DamageAppliedType DamageType);
+	void BP_HandleDamageAnimation(EDamageAppliedType DamageType);
 
-	void HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector, bool FacePlayer = true);
+	void HandleDamageAnimation(EDamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector, bool FacePlayer = true);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInDamageAnim();

@@ -20,18 +20,18 @@ AEnemyCharacter::AEnemyCharacter()
 	DamagedTagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Damaged")));
 }
 
-void AEnemyCharacter::HandleDamageAnimation(DamageAppliedType DamageType, float DistanceMoved, FVector LaunchDirection, bool FacePlayer)
+void AEnemyCharacter::HandleDamageAnimation(EDamageAppliedType DamageType, float DistanceMoved, FVector LaunchDirection, bool FacePlayer)
 {
 	if (!Dying) {
 		switch (DamageType) {
-		case DamageAppliedType::KNOCKUP:
+		case EDamageAppliedType::KNOCKUP:
 			PlayAnim = KnockupAnim;
 			break;
-		case DamageAppliedType::KNOCKBACK:
+		case EDamageAppliedType::KNOCKBACK:
 			PlayAnim = KnockbackAnim;
 			break;
 		}
-		if (PlayAnim == nullptr || DamageType == DamageAppliedType::BASIC) {
+		if (PlayAnim == nullptr || DamageType == EDamageAppliedType::BASIC) {
 			PlayAnim = BasicAnim;
 		}
 

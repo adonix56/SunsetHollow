@@ -28,7 +28,7 @@ protected:
 	void TurnTowardsActor(AActor* LookAtActor);
 
 	UFUNCTION(BlueprintCallable)
-	void DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float DamageDealt, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FaceMe = true);
+	void DamagePlayer(AActor* TargetPlayer, EDamageAppliedType DamageType, float DamageDealt, float MoveDistance = 0.0f, FVector Direction = FVector::ZeroVector, bool FaceMe = true);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Advanced, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> GEDealDamage;

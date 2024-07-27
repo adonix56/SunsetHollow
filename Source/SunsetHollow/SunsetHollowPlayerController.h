@@ -28,7 +28,7 @@ struct FSunsetHollowGameplayAbilityInput {
 };
 
 UENUM(BlueprintType)
-enum class FUsableAbility : uint8 {
+enum class EUsableAbility : uint8 {
 	DASH = 0 UMETA(DisplayName = "Dash"),
 	GUILLOTINE = 1 UMETA(DisplayName = "Guillotine"),
 	STORM = 2 UMETA(DisplayName = "Storm"),
@@ -36,7 +36,7 @@ enum class FUsableAbility : uint8 {
 	SUPERNOVA = 4 UMETA(DisplayName = "Super Nova")
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, FUsableAbility, AbilityOnCooldown, float, CooldownDuration);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityCooldown, EUsableAbility, AbilityOnCooldown, float, CooldownDuration);
 
 UCLASS()
 class ASunsetHollowPlayerController : public APlayerController//, public IAbilitySystemInterface
@@ -129,6 +129,8 @@ protected:
 
 	void OnSpacebarStarted();
 	void OnInteract();
+	bool bInteracting;
+	void EndInteract();
 
 	void OnQStarted();
 	void OnWStarted();

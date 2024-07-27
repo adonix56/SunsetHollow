@@ -37,7 +37,7 @@ void UEnemyAbility::TurnTowardsActor(AActor* LookAtActor)
 	OwningActor->SetActorRotation(LookAtRotation);
 }
 
-void UEnemyAbility::DamagePlayer(AActor* TargetPlayer, DamageAppliedType DamageType, float DamageDealt, float MoveDistance, FVector Direction, bool FaceMe)
+void UEnemyAbility::DamagePlayer(AActor* TargetPlayer, EDamageAppliedType DamageType, float DamageDealt, float MoveDistance, FVector Direction, bool FaceMe)
 {
 	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(GetOwningActorFromActorInfo())) {
 		FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(GEDealDamage);

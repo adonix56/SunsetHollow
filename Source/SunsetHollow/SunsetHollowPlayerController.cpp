@@ -76,7 +76,6 @@ void ASunsetHollowPlayerController::StartRespawn()
 			SunsetCharacter->StartRespawn();
 			DeathUI->RemoveFromParent();
 			DeathUI = nullptr; // UE Garbage Collection will auto destroy unreferenced widgets
-			UE_LOG(LogTemp, Warning, TEXT("UI SHOULD GET DESTROYED IF I SEE THIS MESSAGE!"));
 		}
 	}
 }
@@ -195,8 +194,16 @@ void ASunsetHollowPlayerController::OnSpacebarStarted() {
 void ASunsetHollowPlayerController::OnInteract()
 {
 	if (CurrentInteractable) {
+		bInteracting = true;
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowPlayerController::EndInteract, 0.1f, false); // Prevents Movement on next frame.
 		CurrentInteractable->Interact();
 	}
+}
+
+void ASunsetHollowPlayerController::EndInteract()
+{
+	bInteracting = false;
 }
 
 void ASunsetHollowPlayerController::OnQStarted()
@@ -232,7 +239,7 @@ void ASunsetHollowPlayerController::OnInputStarted()
 void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (!SunsetCharacter->IsControllable()) return;
+		if (!SunsetCharacter->IsControllable() || bInteracting) return;
 	}
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
@@ -269,7 +276,7 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
 {
 	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (!SunsetCharacter->IsControllable()) return;
+		if (!SunsetCharacter->IsControllable() || bInteracting) return;
 	}
 
 	if (FollowTime <= ShortPressThreshold)
@@ -314,11 +321,11 @@ void ASunsetHollowPlayerController::OnCooldownCheck(UAbilitySystemComponent* ASC
 	GESpec.GetAllGrantedTags(GrantedTags);
 	FString(TagString) = GrantedTags.GetByIndex(0).GetTagName().ToString();
 	if (TagString.Contains("Cooldown")) {
-		if (TagString.Contains("Dash")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::DASH, GESpec.Duration);
-		else if (TagString.Contains("Guillotine")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::GUILLOTINE, GESpec.Duration);
-		else if (TagString.Contains("Storm")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::STORM, GESpec.Duration);
-		else if (TagString.Contains("SpinSaw")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::SPINSAW, GESpec.Duration);
-		else if (TagString.Contains("SuperNova")) OnAbilityCooldownEvent.Broadcast(FUsableAbility::SUPERNOVA, GESpec.Duration);
+		if (TagString.Contains("Dash")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::DASH, GESpec.Duration);
+		else if (TagString.Contains("Guillotine")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::GUILLOTINE, GESpec.Duration);
+		else if (TagString.Contains("Storm")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::STORM, GESpec.Duration);
+		else if (TagString.Contains("SpinSaw")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::SPINSAW, GESpec.Duration);
+		else if (TagString.Contains("SuperNova")) OnAbilityCooldownEvent.Broadcast(EUsableAbility::SUPERNOVA, GESpec.Duration);
 		UE_LOG(LogTemp, Warning, TEXT("OnCooldown!! %s"), *GrantedTags.GetByIndex(0).GetTagName().ToString());
 	}
 }

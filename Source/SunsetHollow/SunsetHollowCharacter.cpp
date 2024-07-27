@@ -161,7 +161,7 @@ void ASunsetHollowCharacter::StartRespawn()
 	TopDownCameraComponent->PostProcessSettings.bOverride_ColorGamma = false;
 
 	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowCharacter::EndRespawn, 2.03f, false);
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowCharacter::EndRespawn, 2.03f, false); // 2.03s = Respawn Anim duration
 
 	const_cast<USunsetHollowBaseAttributeSet*>(BaseAttributeSet)->Respawn();
 }
