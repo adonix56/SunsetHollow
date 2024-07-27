@@ -129,8 +129,10 @@ protected:
 
 	void OnSpacebarStarted();
 	void OnInteract();
-	bool bInteracting;
+	bool bControllable;
 	void EndInteract();
+	void SetContollableState(bool CanControl);
+	bool IsControllable();
 
 	void OnQStarted();
 	void OnWStarted();

@@ -54,8 +54,6 @@ public:
 	bool IsDying() const { return bIsDead; }
 	UFUNCTION(BlueprintCallable)
 	bool IsRespawning() const { return bIsRespawning; }
-	UFUNCTION(BlueprintCallable)
-	bool IsControllable() const { return !(GetCharacterMovement()->IsFalling()) && !bIsDead; }
 	FCharacterDeath CharacterDeathEvent;
 
 	UPROPERTY(BlueprintAssignable)

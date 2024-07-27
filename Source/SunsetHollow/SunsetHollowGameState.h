@@ -28,6 +28,7 @@ class SUNSETHOLLOW_API ASunsetHollowGameState : public AGameStateBase
 
 public:
 	const float TutorialMovementTotal = 1000.f;
+	UPROPERTY(BlueprintAssignable)
 	FOnGameStateChanged OnGameStateChangedEvent;
 
 	EGameState GetCurrentGameState() const { return CurrentGameState; }
