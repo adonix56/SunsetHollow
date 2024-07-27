@@ -6,13 +6,14 @@
 #include "Navigation/NavLinkProxy.h"
 #include "Components/BoxComponent.h"
 #include "Interactable.h"
+#include "ActivatingInterface.h"
 #include "JumpNavLink.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SUNSETHOLLOW_API AJumpNavLink : public ANavLinkProxy
+class SUNSETHOLLOW_API AJumpNavLink : public ANavLinkProxy, public IActivatingInterface
 {
 	GENERATED_BODY()
 	
@@ -34,8 +35,8 @@ protected:
 	UFUNCTION()
 	void Jump(AActor* InteractingActor);
 	UFUNCTION()
-	void OnActivating(EGameState NewGameState);
+	void OnActivating(EGameState NewGameState) override;
 	UFUNCTION()
-	void OnDeactivating(EGameState NewGameState);
+	void OnDeactivating(EGameState NewGameState) override;
 	void CreateInteractable();
 };

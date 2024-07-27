@@ -39,7 +39,7 @@ void AJumpNavLink::OnActivating(EGameState NewGameState)
 		UE_LOG(LogTemp, Warning, TEXT("Activating JumpNavLink"));
 		SetActorHiddenInGame(false);
 		CreateInteractable();
-		//GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AJumpNavLink::OnGameStateChanged);
+		GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AJumpNavLink::OnActivating);
 	}
 }
 
@@ -49,7 +49,7 @@ void AJumpNavLink::OnDeactivating(EGameState NewGameState)
 		UE_LOG(LogTemp, Warning, TEXT("Deactivating JumpNavLink"));
 		SetActorHiddenInGame(true);
 		if (Interactable->Destroy()) Interactable = nullptr;
-		//GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AJumpNavLink::OnGameStateChanged);
+		GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AJumpNavLink::OnDeactivating);
 	}
 }
 
