@@ -26,6 +26,8 @@ protected:
 	EGameState ActivatingGameState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
 	EGameState DeactivatingGameState;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
+	bool bProgressGameStateAfterInteracting;
 	ASunsetHollowGameState* GameState;
 	AInteractable* Interactable;
 

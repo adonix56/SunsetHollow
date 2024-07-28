@@ -39,7 +39,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
 	EGameState DeactivatingState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
-	bool bProgressAfterEnemiesKilled;
+	bool bProgressGameStateAfterEnemiesKilled;
 	UFUNCTION()
 	void OnEnemyDefeated(AEnemyCharacter* EnemyDefeated);
 	UFUNCTION()

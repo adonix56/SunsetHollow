@@ -27,6 +27,9 @@ void AJumpNavLink::BeginPlay()
 void AJumpNavLink::Jump(AActor* InteractingActor)
 {
 	if (ASunsetHollowCharacter* PlayerCharacter = Cast<ASunsetHollowCharacter>(InteractingActor)) {
+		if (bProgressGameStateAfterInteracting) {
+			GameState->ProgressGameState();
+		}
 		FVector DestinationPoint = GetActorLocation() + PointLinks[0].Right;
 		DestinationPoint.Z += 250.f;
 		PlayerCharacter->JumpToDestination(DestinationPoint);

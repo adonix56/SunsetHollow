@@ -46,6 +46,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ZoomCameraWithTimer(float zoomTime, float targetDistance, float speed, float delay);
 
+	UFUNCTION(BlueprintCallable)
+	void FullyHeal();
 	void StartDie();
 	void StartRespawn();
 	void EndRespawn();

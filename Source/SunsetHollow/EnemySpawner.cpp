@@ -44,7 +44,7 @@ void AEnemySpawner::Spawn()
 void AEnemySpawner::OnEnemyDefeated(AEnemyCharacter* EnemyDefeated)
 {
 	SpawnedEnemies.Remove(EnemyDefeated);
-	if (bProgressAfterEnemiesKilled && SpawnedEnemies.Num() == 0) {
+	if (bProgressGameStateAfterEnemiesKilled && SpawnedEnemies.Num() == 0) {
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		GameState->ProgressGameState();
 	}

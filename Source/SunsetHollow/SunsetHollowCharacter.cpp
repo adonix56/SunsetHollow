@@ -152,6 +152,11 @@ void ASunsetHollowCharacter::ZoomCameraWithTimer(float zoomTime, float targetDis
 	bZoom = true;
 }
 
+void ASunsetHollowCharacter::FullyHeal()
+{
+	const_cast<USunsetHollowBaseAttributeSet*>(BaseAttributeSet)->Respawn();
+}
+
 void ASunsetHollowCharacter::StartDie()
 {
 	bIsDead = true;
@@ -172,7 +177,7 @@ void ASunsetHollowCharacter::StartRespawn()
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASunsetHollowCharacter::EndRespawn, 2.03f, false); // 2.03s = Respawn Anim duration
 
-	const_cast<USunsetHollowBaseAttributeSet*>(BaseAttributeSet)->Respawn();
+	FullyHeal();
 }
 
 void ASunsetHollowCharacter::EndRespawn()

@@ -107,6 +107,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetAbilityCooldown(EUsableAbility Ability) { return CooldownManager[Ability]; }
 
+	UFUNCTION(BlueprintCallable)
+	void ResetAllAbilityCooldowns();
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;

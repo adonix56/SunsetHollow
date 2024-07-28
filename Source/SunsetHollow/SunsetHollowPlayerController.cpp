@@ -223,6 +223,25 @@ void ASunsetHollowPlayerController::SetControllableState(bool CanControl)
 	bControllable = CanControl;
 }
 
+void ASunsetHollowPlayerController::ResetAllAbilityCooldowns()
+{
+	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
+		UAbilitySystemComponent* GASComponent = SunsetCharacter->GetAbilitySystemComponent();
+		if (GASComponent) {
+			FGameplayTagContainer(Cooldowns);
+			Cooldowns.AddTag(FGameplayTag::RequestGameplayTag("Action.Dash.Cooldown"));
+			Cooldowns.AddTag(FGameplayTag::RequestGameplayTag("Action.Guillotine.Cooldown"));
+			Cooldowns.AddTag(FGameplayTag::RequestGameplayTag("Action.Storm.Cooldown"));
+			Cooldowns.AddTag(FGameplayTag::RequestGameplayTag("Action.SpinSaw.Cooldown"));
+			Cooldowns.AddTag(FGameplayTag::RequestGameplayTag("Action.SuperNova.Cooldown"));
+			GASComponent->RemoveActiveEffectsWithAppliedTags(Cooldowns);
+			for (const TPair<EUsableAbility, float>& Pair : CooldownManager) {
+				CooldownManager[Pair.Key] = -0.1f;
+			}
+		}
+	}
+}
+
 bool ASunsetHollowPlayerController::IsControllable()
 {
 	ASunsetHollowCharacter* PlayerCharacter = GetSunsetCharacter();
