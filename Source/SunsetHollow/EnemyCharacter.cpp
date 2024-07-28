@@ -75,6 +75,7 @@ void AEnemyCharacter::StartDie()
 
 void AEnemyCharacter::EndDie()
 {
+	OnEnemyDefeatedEvent.Broadcast(this);
 	Destroy();
 }
 

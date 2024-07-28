@@ -12,6 +12,8 @@ class UBehaviorTree;
 class UAnimMontage;
 class UEnemyAbility;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDefeated, AEnemyCharacter*, EnemyDefeated);
+
 UENUM(BlueprintType)
 enum class EDamageAppliedType : uint8 {
 	BASIC = 0 UMETA(DisplayName = "Basic"),
@@ -29,28 +31,18 @@ public:
 	AEnemyCharacter();
 
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override { return GASComponent; }
-
 	UBehaviorTree* GetBehaviorTree() const { return Tree; }
-
 	float GetSightRadius() const { return SightRadius; }
-	
 	float GetLoseSightRadius() const { return SightRadius + LoseSightDistance; }
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_HandleDamageAnimation(EDamageAppliedType DamageType);
-
 	void HandleDamageAnimation(EDamageAppliedType DamageType, float DistanceMoved = 0.0f, FVector LaunchDirection = FVector::ZeroVector, bool FacePlayer = true);
-
+	UPROPERTY(BlueprintAssignable)
+	FOnEnemyDefeated OnEnemyDefeatedEvent;
 	UFUNCTION(BlueprintCallable)
 	bool IsInDamageAnim();
-
 	void StartDie();
-
 	UFUNCTION(BlueprintCallable)
 	void EndDie();
-
 	bool IsDying() { return Dying; }
-	
 	UFUNCTION(BlueprintCallable)
 	bool CastRandomAbility();
 
@@ -60,38 +52,27 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	TArray<TSubclassOf<UEnemyAbility>> AvailableAbilities;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	UAbilitySystemComponent* GASComponent;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
 	const USunsetHollowBaseAttributeSet* BaseAttributeSet;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* Tree;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	float SightRadius;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	float LoseSightDistance;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* BasicAnim;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* KnockupAnim;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* KnockbackAnim;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Damage, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* DieAnim;
-
 	UAnimMontage* PlayAnim;
 	FDelegateHandle HealthChangedDelegateHandle;
 	FGameplayTagContainer DamagedTagContainer;
-
 	void HealthChanged(const FOnAttributeChangeData& Data);
 	bool Dying = false;
 

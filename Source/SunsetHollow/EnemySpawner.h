@@ -30,18 +30,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Respawn, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AEnemyCharacter> EnemyToSpawn;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Respawn, meta = (AllowPrivateAccess = "true"))
-	TArray<AEnemyCharacter*> SpawnedEnemies;
+	TMap<AEnemyCharacter*, AEnemyCharacter*> SpawnedEnemies;
+	FTimerHandle TimerHandle;
 
 	ASunsetHollowGameState* GameState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
 	EGameState ActivatingState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
 	EGameState DeactivatingState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState, meta = (AllowPrivateAccess = "true"))
 	bool bProgressAfterEnemiesKilled;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameState meta = (AllowPrivateAccess = "true"))
-	EGameState ProgressingState;
-
+	UFUNCTION()
+	void OnEnemyDefeated(AEnemyCharacter* EnemyDefeated);
 	UFUNCTION()
 	virtual void OnActivating(EGameState NewGameState) override;
 	UFUNCTION()

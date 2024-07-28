@@ -36,15 +36,24 @@ void AEnemySpawner::Spawn()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	SpawnedEnemies.Add(GetWorld()->SpawnActor<AEnemyCharacter>(EnemyToSpawn, GetActorTransform(), SpawnParams));
-	UE_LOG(LogTemp, Warning, TEXT("EnemySpawner: Spawning Enemy"));
+	AEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<AEnemyCharacter>(EnemyToSpawn, GetActorTransform(), SpawnParams);
+	SpawnedEnemy->OnEnemyDefeatedEvent.AddDynamic(this, &AEnemySpawner::OnEnemyDefeated);
+	SpawnedEnemies.Add(SpawnedEnemy, SpawnedEnemy);
+}
+
+void AEnemySpawner::OnEnemyDefeated(AEnemyCharacter* EnemyDefeated)
+{
+	SpawnedEnemies.Remove(EnemyDefeated);
+	if (bProgressAfterEnemiesKilled && SpawnedEnemies.Num() == 0) {
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+		GameState->ProgressGameState();
+	}
 }
 
 void AEnemySpawner::OnActivating(EGameState NewGameState)
 {
 	if (NewGameState == ActivatingState) {
-		FTimerHandle UnusedHandle;
-		GetWorldTimerManager().SetTimer(UnusedHandle, this, &AEnemySpawner::Spawn, RespawnTimer, bRepeatable, 0.1f);
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AEnemySpawner::Spawn, RespawnTimer, bRepeatable, 0.1f);
 		GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AEnemySpawner::OnActivating);
 	}
 }
@@ -53,7 +62,7 @@ void AEnemySpawner::OnDeactivating(EGameState NewGameState)
 {
 	if (NewGameState == DeactivatingState) {
 		GameState->OnGameStateChangedEvent.RemoveDynamic(this, &AEnemySpawner::OnDeactivating);
-		Destroy()
+		Destroy();
 	}
 }
 
