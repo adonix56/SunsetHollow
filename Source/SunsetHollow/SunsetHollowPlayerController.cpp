@@ -179,9 +179,7 @@ void ASunsetHollowPlayerController::OnRightClickReleased()
 
 void ASunsetHollowPlayerController::ActivateAbilityByIndex(int AbilityIndex, bool SetIsAttacking)
 {
-	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (!IsControllable()) return;
-	}
+	if (!IsControllable()) return;
 	if (AbilityIndex >= 0 && AbilityIndex < GameplayAbilityArray.Num()) {
 		ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter();
 		if (SunsetCharacter) {
@@ -205,6 +203,7 @@ void ASunsetHollowPlayerController::OnSpacebarStarted() {
 
 void ASunsetHollowPlayerController::OnInteract()
 {
+	if (!IsControllable()) return;
 	if (CurrentInteractable) {
 		SetControllableState(false);
 		FTimerHandle TimerHandle;
@@ -272,9 +271,7 @@ void ASunsetHollowPlayerController::OnInputStarted()
 // Triggered every frame when the input is held down
 void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 {
-	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (!IsControllable()) return;
-	}
+	if (!IsControllable()) return;
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
@@ -309,10 +306,7 @@ void ASunsetHollowPlayerController::OnSetDestinationTriggered()
 
 void ASunsetHollowPlayerController::OnSetDestinationReleased()
 {
-	if (ASunsetHollowCharacter* SunsetCharacter = GetSunsetCharacter()) {
-		if (!IsControllable()) return;
-	}
-
+	if (!IsControllable()) return;
 	if (FollowTime <= ShortPressThreshold)
 	{
 		// We move there and spawn some particles

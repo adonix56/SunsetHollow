@@ -16,24 +16,22 @@ void USunsetHollowBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEff
 		const float DamageDealt = GetDamage();
 		SetDamage(0.f);
 		
-		if (DamageDealt > 0.f) {
-			AActor* TargetActor = Data.Target.GetOwner();
-			if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetActor)) { // Enemy Taking Damage
-				if (AEnemyAIController* EnemyCont = Cast<AEnemyAIController>(Enemy->GetController())) {
-					SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
-					if (GetHealth() < 0.03f) {
-						EnemyCont->StartDie();
-					}
+		AActor* TargetActor = Data.Target.GetOwner();
+		if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(TargetActor)) { // Enemy Taking Damage
+			if (AEnemyAIController* EnemyCont = Cast<AEnemyAIController>(Enemy->GetController())) {
+				SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
+				if (GetHealth() < 0.03f) {
+					EnemyCont->StartDie();
 				}
 			}
+		}
 
-			if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(TargetActor)) { // Player Taking Damage
-				if (!Player->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.Invincible")))) {
-					if (ASunsetHollowPlayerController* PlayerCont = Cast<ASunsetHollowPlayerController>(Player->GetController())) {
-						SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
-						if (GetHealth() < 0.03f) {
-							PlayerCont->StartDie();
-						}
+		if (ASunsetHollowCharacter* Player = Cast<ASunsetHollowCharacter>(TargetActor)) { // Player Taking Damage
+			if (!Player->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.Invincible")))) {
+				if (ASunsetHollowPlayerController* PlayerCont = Cast<ASunsetHollowPlayerController>(Player->GetController())) {
+					SetHealth(FMath::Clamp(GetHealth() - DamageDealt, 0.0f, GetMaxHealth()));
+					if (GetHealth() < 0.03f) {
+						PlayerCont->StartDie();
 					}
 				}
 			}
