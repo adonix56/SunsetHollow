@@ -18,7 +18,7 @@ EBTNodeResult::Type UBTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeCompone
 			FVector CurrentLocation(EnemyPawn->GetActorLocation());
 			if (UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(GetWorld())) {
 				FNavLocation TargetLocation;
-				if (NavSys->GetRandomPointInNavigableRadius(CurrentLocation, SearchRadius, TargetLocation)) {
+				if (NavSys->GetRandomReachablePointInRadius(CurrentLocation, SearchRadius, TargetLocation)) {
 					OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), TargetLocation);
 					FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 					return EBTNodeResult::Succeeded;
